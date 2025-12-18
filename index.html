@@ -183,6 +183,11 @@
             </div>
         </div>
 
+        <!-- Workflow Counter (NY) -->
+        <div id="workflow-counter" class="text-center text-sm text-slate-500 dark:text-slate-400 mb-6 -mt-4 transition-opacity duration-300">
+            <!-- Fylls dynamiskt av JS -->
+        </div>
+
         <!-- Controls -->
         <div class="mb-8 space-y-6">
             <!-- Categories -->
@@ -443,9 +448,9 @@
                     <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Perfekt för</div><div id="modal-usecases" class="flex flex-wrap gap-2"></div></div>
                     <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Taggar</div><div id="modal-tags" class="flex flex-wrap gap-2"></div></div>
                 </div>
+                <!-- UPDATE: Removed Copy Button, Full Width Download -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
-                    <button id="btn-download" class="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-6 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-primary/20"><i data-lucide="download" class="w-5 h-5"></i> <span>Ladda ner JSON</span></button>
-                    <button id="btn-copy" class="flex-1 flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium py-3 px-6 rounded-xl transition-all active:scale-[0.98]"><i data-lucide="copy" class="w-5 h-5"></i> <span id="copy-text">Kopiera JSON</span></button>
+                    <button id="btn-download" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-6 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-primary/20"><i data-lucide="download" class="w-5 h-5"></i> <span>Ladda ner arbetsflöde</span></button>
                 </div>
             </div>
         </div>
@@ -584,15 +589,15 @@
         }
 
         const CATEGORIES = [
-            { id: 'all', label: 'Alla', icon: 'layout-grid' },
-            { id: 'favorites', label: 'Favoriter', icon: 'star' },
-            { id: 'swedish', label: 'Svenska Integrationer', icon: '🇸🇪' },
-            { id: 'ai-automation', label: 'AI Automation', icon: 'bot' },
-            { id: 'social', label: 'Social Media', icon: 'share-2' },
-            { id: 'sales', label: 'Sales & CRM', icon: 'briefcase' },
-            { id: 'content', label: 'Content Creation', icon: 'palette' },
-            { id: 'productivity', label: 'Produktivitet', icon: 'zap' },
-            { id: 'specialized', label: 'Specialized', icon: 'wrench' }
+            { id: 'all', label: 'Alla', icon: 'layout-grid', aliases: [] },
+            { id: 'favorites', label: 'Favoriter', icon: 'star', aliases: [] },
+            { id: 'swedish', label: 'Svenska Integrationer', icon: '🇸🇪', aliases: ['svensk', 'sweden', 'swedish'] },
+            { id: 'ai-automation', label: 'AI Automation', icon: 'bot', aliases: ['ai', 'artificiell', 'gpt', 'llm'] },
+            { id: 'social', label: 'Social Media', icon: 'megaphone', aliases: ['social', 'some', 'linkedin', 'facebook', 'instagram', 'tiktok'] },
+            { id: 'sales', label: 'Sälj & CRM', icon: 'briefcase', aliases: ['sälj', 'sales', 'crm', 'pipe'] },
+            { id: 'content', label: 'Innehållskapande', icon: 'palette', aliases: ['content', 'innehåll', 'design', 'bild'] },
+            { id: 'productivity', label: 'Produktivitet', icon: 'zap', aliases: ['produktivitet', 'effektivitet', 'admin'] },
+            { id: 'specialized', label: 'Specialiserad', icon: 'wrench', aliases: ['special', 'bygg', 'fastighet', 'nisch'] }
         ];
 
         const STATIC_WORKFLOWS = [
@@ -645,6 +650,7 @@
         const typingIndicator = document.getElementById('typing-indicator');
         const paywallModal = document.getElementById('paywall-modal');
         const dlCountEl = document.getElementById('dl-count');
+        const counterEl = document.getElementById('workflow-counter'); // NY: Referens till räknaren
 
         // --- MAIN FUNCTIONS ---
 
@@ -652,7 +658,8 @@
             renderControls();
             renderHeader(); 
             renderStats();
-            renderWorkflows();
+            renderWorkflows(); // Ritar statisk data direkt (LCP)
+            fetchWorkflows();  // Hämtar färsk data i bakgrunden (Optimization)
             initTheme();
             initStarfall(); 
             updateAuthUI(); 
@@ -987,19 +994,24 @@
             setTimeout(() => paywallModal.classList.add('hidden'), 300);
         }
 
-        async function renderWorkflows() {
-            if (USE_BACKEND) {
-                try {
-                    const response = await fetch(API_ENDPOINTS.workflows);
-                    if (response.ok) {
-                        const data = await response.json();
-                        // Handle raw array or { workflows: [...] } structure
-                        WORKFLOWS = Array.isArray(data) ? data : (data.workflows || STATIC_WORKFLOWS);
-                    }
-                } catch (error) {
-                    console.warn('Backend unavailable, using static data:', error);
+        // OPTIMIZATION: Separated Fetch from Render to prevent API spam
+        async function fetchWorkflows() {
+            if (!USE_BACKEND) return;
+            try {
+                const response = await fetch(API_ENDPOINTS.workflows);
+                if (response.ok) {
+                    const data = await response.json();
+                    WORKFLOWS = Array.isArray(data) ? data : (data.workflows || STATIC_WORKFLOWS);
+                    renderWorkflows(); // Re-render with fresh data
+                    renderStats();     // Update stats with real numbers
                 }
+            } catch (error) {
+                console.warn('Backend unavailable, using static data:', error);
             }
+        }
+
+        function renderWorkflows() {
+            // NOTE: API fetch removed from here. Now strictly synchronous filtering.
 
             let filtered = WORKFLOWS.filter(wf => {
                 const matchesSearch = wf.title.toLowerCase().includes(state.search.toLowerCase()) || wf.description.toLowerCase().includes(state.search.toLowerCase());
@@ -1008,13 +1020,42 @@
                 if (state.categoryFilter === 'favorites') {
                     matchesCategory = userState.favorites.includes(wf.id);
                 } else if (state.categoryFilter !== 'all') {
-                    matchesCategory = wf.category === state.categoryFilter;
+                    // ROBUST FIX: Case-insensitive & Data Type Normalization
+                    // 1. Hämta data säkert (Airtable skickar ofta 'Category' med stort C)
+                    const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
+                    
+                    // 2. Normalisera filter (ID och Label)
+                    const targetId = state.categoryFilter.toLowerCase();
+                    const targetLabel = CATEGORIES.find(c => c.id === state.categoryFilter)?.label.toLowerCase() || '';
+
+                    // 3. Skapa platt array av workflow-kategorier (lowercase)
+                    let wfCats = [];
+                    if (Array.isArray(rawCat)) {
+                        wfCats = rawCat.map(c => String(c).toLowerCase());
+                    } else if (typeof rawCat === 'string') {
+                        wfCats = [rawCat.toLowerCase()];
+                    }
+
+                    // 4. Matcha: Kolla om ID eller Label finns i workflow-kategorierna
+                    // Använder 'includes' åt båda hållen för maximal träffsäkerhet
+                    matchesCategory = wfCats.some(cat => 
+                        cat === targetId || 
+                        cat === targetLabel ||
+                        cat.includes(targetId) || 
+                        cat.includes(targetLabel) ||
+                        (targetLabel && targetLabel.includes(cat))
+                    );
                 }
 
                 const matchesPlatform = state.platformFilter === 'all' || wf.platform === state.platformFilter;
                 const matchesDifficulty = state.difficultyFilter === 'all' || wf.difficulty === state.difficultyFilter;
                 return matchesSearch && matchesCategory && matchesPlatform && matchesDifficulty;
             });
+
+            // NY: Uppdatera räknaren
+            if (counterEl) {
+                counterEl.innerHTML = `Visar <span class="font-bold text-slate-900 dark:text-white">${filtered.length}</span> av <span class="font-medium">${WORKFLOWS.length}</span> automationer`;
+            }
 
             if (state.sort === 'popular') filtered.sort((a, b) => b.downloads - a.downloads);
             else if (state.sort === 'recent') filtered.reverse();
@@ -1032,6 +1073,35 @@
                     badge = `<span class="badge-pro px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"><i data-lucide="crown" class="w-3 h-3"></i> PRO</span>`;
                 }
 
+                // --- NEW CATEGORY ICON LOGIC ---
+                // 1. Safe extraction
+                const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
+                // 2. Normalize to an ID we can look up (take first if array)
+                const searchStr = (Array.isArray(rawCat) ? rawCat[0] : rawCat)?.toString().toLowerCase() || '';
+
+                // 3. Find matching category object with aliases
+                const foundCat = CATEGORIES.find(c => {
+                    if (c.id === 'all') return false;
+                    const directMatch = c.id === searchStr || c.label.toLowerCase() === searchStr;
+                    // Check aliases if defined
+                    const aliasMatch = c.aliases && c.aliases.some(alias => searchStr.includes(alias));
+                    return directMatch || aliasMatch;
+                });
+
+                let catIcon = '';
+                if (foundCat) {
+                    // Check if Emoji (simple heuristics: non-ascii char)
+                    const isEmoji = foundCat.icon.match(/\p{Emoji}/u);
+                    
+                    if (isEmoji) {
+                         catIcon = `<span class="text-sm opacity-80" title="${foundCat.label}">${foundCat.icon}</span>`;
+                    } else {
+                         // Lucide icon
+                         catIcon = `<i data-lucide="${foundCat.icon}" class="w-4 h-4 text-slate-400" title="${foundCat.label}"></i>`;
+                    }
+                }
+                // -------------------------------
+
                 const isLocked = wf.proBadge && userState.tier === 'free';
                 const actionIcon = isLocked ? 'lock' : 'arrow-right';
                 const actionText = isLocked ? 'Lås upp' : 'Visa';
@@ -1040,8 +1110,9 @@
                 return `
                 <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border ${wf.proBadge ? 'border-amber-200 dark:border-amber-900/50' : 'border-slate-200 dark:border-slate-800'} p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full cursor-pointer" onclick="handleWorkflowClick('${wf.id}')">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="flex flex-wrap gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider platform-${wf.platform}">${wf.platform}</span>
+                            ${catIcon} <!-- Injected Icon -->
                             ${badge}
                         </div>
                         <div class="flex items-center gap-2">
@@ -1124,7 +1195,7 @@
             
             modalHelpBtn.href = getEmailLink(wf);
             document.getElementById('btn-download').onclick = () => tryDownload(wf);
-            document.getElementById('btn-copy').onclick = () => copyJSON(wf);
+            // Removed btn-copy event listener
 
             modalBackdrop.classList.remove('hidden');
             setTimeout(() => { modalBackdrop.classList.remove('opacity-0'); modalContent.classList.remove('scale-95', 'opacity-0'); modalContent.classList.add('scale-100', 'opacity-100'); }, 10);
@@ -1252,10 +1323,7 @@
             }
         }
 
-        function copyJSON(workflow) {
-            const dataStr = JSON.stringify(workflow.json || {name: workflow.title}, null, 2);
-            navigator.clipboard.writeText(dataStr).then(() => showToast("JSON kopierat!")).catch(err => showToast("Kunde inte kopiera", true));
-        }
+        // REMOVED: copyJSON function
 
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast'); document.getElementById('toast-message').textContent = message;
