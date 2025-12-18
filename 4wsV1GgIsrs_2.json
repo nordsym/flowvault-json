@@ -1,105 +1,535 @@
-### PREMISE AGENT
-You are a creative story premise generator specializing in crafting unique, compelling story concepts. Your role is to:
-
-Generate original story premises that combine unexpected elements
-Ensure each premise has clear dramatic potential
-Include both the central conflict and a unique hook
-Keep premises concise (2-3 sentences maximum)
-Avoid common tropes and clichés
-
-Format your output as:
-Premise: [The main concept]
-Conflict: [The central tension or challenge]
-Hook: [The unique element that makes this story special]
-
-### CHARACTER AGENT
-You are a character development specialist. Create 2-3 main characters fitting the premise, keeping total response under 3800 characters. For each character provide:
-Name: [Full name]
-Core: [One sentence essence]
-Want vs Need: [External goal vs internal need]
-Flaw: [Main character flaw]
-Stakes: [What they stand to lose]
-Relations: [Key relationships, one line each]
-Keep each section to 1-2 lines maximum. Focus on essential character elements that drive the story forward.
-
-### OUTLINER AGENT
-You are a story structure specialist who creates concise outlines based on premises and characters. Structure as:
-Act 1:
-
-Hook: [Opening hook]
-Inciting: [Event starting journey]
-Turn: [First major turn]
-
-Act 2:
-
-Midpoint: [Central twist]
-Crisis: [Major setback]
-
-Act 3:
-
-Climax: [Final confrontation]
-Resolution: [Outcome]
-
-Keep each point to 1-2 sentences maximum.
-
-
-### WRITER AGENT
-You are a skilled creative fiction writer who transforms outlines into engaging, complete stories. 
-
-Send the story to the user using the email tool!
-Make the email look professional by adding HTML and styling.
-
-Your role is to:
-Core Requirements:
-
-Write a complete story following the approved outline
-Develop all plot threads fully
-Maintain consistent character voices and arcs
-Create rich, immersive scenes
-Balance showing and telling
-Deliver a satisfying narrative arc
-
-Writing Guidelines:
-
-Use strong, active verbs
-Include vivid sensory details
-Vary sentence structure and pacing
-Create authentic dialogue
-Maintain consistent POV
-Honor the established outline while allowing for organic development
-Keep the unique premise elements central throughout
-
-Structure Each Chapter:
-
-Open with a hook
-Establish clear scene goals
-Build tension progressively
-End with a compelling transition
-Maintain momentum between chapters
-
-Story Elements to Include:
-
-Detailed scene-setting that engages the senses
-Character internal thoughts and emotional reactions
-Meaningful dialogue that reveals character and advances plot
-Thematic elements woven naturally throughout
-Subplots that enhance the main story
-Proper build-up of tension and release
-Satisfying resolution of all major plot threads
-
-Quality Checks:
-
-Verify character arcs are complete and satisfying
-Ensure all setup elements have payoffs
-Confirm theme is consistently developed
-Check for plot holes or inconsistencies
-Verify pacing remains engaging throughout
-
-Format:
-[Title]
-Chapter 1: [Chapter Title]
-[Chapter content]
-Chapter 2: [Chapter Title]
-[Chapter content]
-[Continue for all chapters...]
-Remember: Create a rich, complete story that fully develops all elements established in the premise, characters, and outline.
+{
+  "name": "Human in the Loop - Advanced",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [180, -280],
+      "id": "66026220-c77c-4b77-96da-970580710097",
+      "name": "OpenAI Chat Model - GPT-4",
+      "credentials": {
+        "openAiApi": {
+          "id": "NIAubkxDCLCvpVb7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.data.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "continue",
+              "description": "The text indicates that the user approves and the process may continue."
+            },
+            {
+              "category": "revise",
+              "description": "The text is requesting changes or revisions."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [-320, -20],
+      "id": "b65f81c6-cea5-4848-a609-77c550282b27",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "message": "={{ $json.output }}",
+        "responseType": "freeText",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [-480, -20],
+      "id": "5131931a-78fa-4aba-87c0-1d97ca0dc6f8",
+      "name": "Premise Feedback",
+      "webhookId": "2bf64606-9d6e-4646-9fbf-a3c381005f14",
+      "credentials": {
+        "telegramApi": {
+          "id": "F5Fsxyw3McbPqJoe",
+          "name": "Youtube Tutorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Advanced Features: Memory + Export",
+        "height": 500,
+        "width": 1100,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-900, -140],
+      "id": "006df47a-6059-4ee2-aaae-8b2ef89b7dfa",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "You are a creative story premise generator with memory of user preferences. Review past approved premises to understand the user's taste. Generate premises that:\n\n- Build on successful elements from previous stories\n- Avoid rejected themes or styles\n- Incorporate user's evolving preferences\n- Maintain originality while respecting their taste\n\nFormat:\nPremise: [Concept]\nConflict: [Central tension]\nHook: [Unique element]\nStyle Note: [How this builds on their preferences]"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [-780, -20],
+      "id": "553b8fdd-97f5-408e-b1e1-999ed1ec3beb",
+      "name": "Premise Agent - Memory Enhanced"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "message": "={{ $json.output }}",
+        "responseType": "freeText",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [780, -40],
+      "id": "9fa38234-ee02-4b1c-8405-8764b072670e",
+      "name": "Character Feedback",
+      "webhookId": "a686a13c-ad93-4fc3-bb37-84ebb683025c",
+      "credentials": {
+        "telegramApi": {
+          "id": "F5Fsxyw3McbPqJoe",
+          "name": "Youtube Tutorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "03fa0c0b-6079-4c75-b29f-735092640fd1",
+              "name": "message.text",
+              "value": "=Approved premise:\n\n{{ $('Premise Agent - Memory Enhanced').item.json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [260, -40],
+      "id": "8b5d8360-2588-46e6-807c-04a7c85eed31",
+      "name": "Character Input"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.data.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "continue",
+              "description": "The text indicates that the user approves and the process may continue."
+            },
+            {
+              "category": "revise",
+              "description": "The text is requesting changes or revisions."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [940, -40],
+      "id": "24da6e2c-9493-4394-ac9b-b3f5f6333521",
+      "name": "Text Classifier1"
+    },
+    {
+      "parameters": {
+        "content": "## Character Creator",
+        "height": 500,
+        "width": 1200,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [240, -140],
+      "id": "b8bf3a0e-ef61-40a3-a152-2c64cf011d49",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [-1080, 100],
+      "id": "5e83f529-d3cf-487c-91d5-689f0c86b196",
+      "name": "Telegram Trigger",
+      "webhookId": "97a6752b-8dc9-4ef8-a1bd-3746e8ec1793",
+      "credentials": {
+        "telegramApi": {
+          "id": "F5Fsxyw3McbPqJoe",
+          "name": "Youtube Tutorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "You are a character development specialist. Create 2-3 main characters with depth and complexity.\n\nFor each character:\nName: [Full name]\nCore: [One sentence essence]\nWant vs Need: [External goal vs internal need]\nFlaw: [Character flaw that creates obstacles]\nStakes: [What they stand to lose]\nRelations: [Key relationships]\nGrowth Arc: [How they'll change]\n\nKeep concise but rich in detail."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [460, -40],
+      "id": "d705b654-ac33-471d-80a9-2b906bd7e9e5",
+      "name": "Character Developer"
+    },
+    {
+      "parameters": {
+        "content": "## Story Export System",
+        "height": 440,
+        "width": 800,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [240, 400],
+      "id": "06807454-a24e-4d36-9055-b7430cbf648f",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6b68835-5cf3-44ed-8e8b-5155cd1c1c0a",
+              "name": "message.text",
+              "value": "=# Premise:\n{{ $('Premise Agent - Memory Enhanced').item.json.output }}\n\n# Characters:\n{{ $('Character Developer').item.json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [300, 500],
+      "id": "83271f82-6d12-4c3b-9da9-1de1931a747f",
+      "name": "Writer input"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "You are an elite fiction writer. Create a complete, publication-ready story.\n\n**EXPORT REQUIREMENTS:**\n1. Use the Gmail tool to send the story\n2. Use the Google Drive tool to save a backup copy\n3. Format with professional HTML styling\n4. Include story metadata (title, word count, genre)\n\n**STORY QUALITY:**\n- Rich sensory details\n- Authentic dialogue\n- Strong pacing\n- Satisfying character arcs\n- Thematic depth\n- Professional polish\n\nDeliver a story ready for publication."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [440, 500],
+      "id": "28dad328-5b9b-4470-9fc5-6ea3fe7ac688",
+      "name": "Writer Agent - Advanced"
+    },
+    {
+      "parameters": {
+        "sendTo": "leon.vanzyl@gmail.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [660, 680],
+      "id": "2a225828-838d-4240-8b86-b549e5fad4ed",
+      "name": "Gmail - Send Story",
+      "webhookId": "c7ab2a70-04d5-4a0d-860f-b61658c93892",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KEacAzjyWMFBlKiL",
+          "name": "Gmail Youtube Tutorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "✅ Story complete!\n\n📧 Sent to email\n📁 Backed up to Google Drive\n\nYour story is ready!",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [880, 500],
+      "id": "2930c013-4217-4984-9923-bf08d943cbdb",
+      "name": "Success Notification",
+      "webhookId": "6be42293-d046-4afd-b208-29553db7198d",
+      "credentials": {
+        "telegramApi": {
+          "id": "F5Fsxyw3McbPqJoe",
+          "name": "Youtube Tutorial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "name": "={{ 'Story_' + $now.format('yyyy-MM-dd_HHmmss') + '.html' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [660, 820],
+      "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "name": "Save to Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "GOOGLE_DRIVE_CRED_ID",
+          "name": "Google Drive"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://your-webhook-url.com/story-progress",
+        "options": {
+          "bodyParametersJson": "={{ { \"user_id\": $('Telegram Trigger').item.json.message.from.id, \"stage\": \"complete\", \"timestamp\": $now.toISO() } }}"
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [880, 680],
+      "id": "b2c3d4e5-f6a7-8901-2345-678901bcdef0",
+      "name": "Progress Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "memory-store-1",
+              "name": "story_metadata",
+              "value": "={{ { \"premise\": $('Premise Agent - Memory Enhanced').item.json.output, \"timestamp\": $now.toISO(), \"approved\": true } }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-580, 100],
+      "id": "c3d4e5f6-a7b8-9012-3456-789012cdef01",
+      "name": "Store Story Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model - GPT-4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Premise Agent - Memory Enhanced",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Character Developer",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Writer Agent - Advanced",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Character Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Premise Feedback": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Premise Agent - Memory Enhanced": {
+      "main": [
+        [
+          {
+            "node": "Premise Feedback",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Store Story Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Developer": {
+      "main": [
+        [
+          {
+            "node": "Character Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Input": {
+      "main": [
+        [
+          {
+            "node": "Character Developer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Feedback": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier1": {
+      "main": [
+        [
+          {
+            "node": "Writer input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Premise Agent - Memory Enhanced",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Writer input": {
+      "main": [
+        [
+          {
+            "node": "Writer Agent - Advanced",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Writer Agent - Advanced": {
+      "main": [
+        [
+          {
+            "node": "Success Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Progress Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Send Story": {
+      "ai_tool": [
+        [
+          {
+            "node": "Writer Agent - Advanced",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b89789f8-b8f9-47fb-9bba-d8dd0e9de1cd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c9b5ffc3334450cdf2932407bee77ee116a63706cde141a825b6dab1a723287d"
+  },
+  "id": "ezUAygRxaDRfF2sS",
+  "tags": []
+}
