@@ -35,7 +35,7 @@
                         primary: { DEFAULT: '#00BFFF', hover: '#00D4FF', light: 'rgba(0, 191, 255, 0.1)' },
                         slate: { 850: '#151F32', 950: '#020617' },
                         n8n: '#FF6D5A', make: '#6F3BF5', zapier: '#FF4F00', fortnox: '#ED3237',
-                        pro: { DEFAULT: '#f59e0b', light: '#fef3c7', dark: '#78350f' }, // Amber
+                        pro: { DEFAULT: '#d946ef', light: '#fae8ff', dark: '#701a75' }, // Fuchsia
                         ent: { DEFAULT: '#8b5cf6', light: '#ede9fe', dark: '#4c1d95' }  // Violet
                     },
                     animation: {
@@ -74,8 +74,8 @@
         .platform-make { color: #6F3BF5; background-color: rgba(111, 59, 245, 0.1); }
         .platform-zapier { color: #FF4F00; background-color: rgba(255, 79, 0, 0.1); }
 
-        /* Badges */
-        .badge-pro { background: linear-gradient(to right, #f59e0b, #d97706); color: white; border: 1px solid #b45309; box-shadow: 0 1px 2px rgba(245, 158, 11, 0.3); }
+        /* Badges - Updated to Fuchsia gradient */
+        .badge-pro { background: linear-gradient(to right, #d946ef, #c026d3); color: white; border: 1px solid #a21caf; box-shadow: 0 1px 2px rgba(217, 70, 239, 0.3); }
         
         /* Body Layering */
         body { position: relative; z-index: 1; }
@@ -104,9 +104,9 @@
         .message-enter { animation: slideInUp 0.3s ease-out forwards; }
         @keyframes slideInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Radio Button Custom Style */
-        .radio-selected { background-color: rgba(245, 158, 11, 0.1); border-color: #f59e0b; }
-        .dark .radio-selected { background-color: rgba(245, 158, 11, 0.2); border-color: #f59e0b; }
+        /* Radio Button Custom Style - Updated to Fuchsia */
+        .radio-selected { background-color: rgba(217, 70, 239, 0.1); border-color: #d946ef; }
+        .dark .radio-selected { background-color: rgba(217, 70, 239, 0.2); border-color: #d946ef; }
     </style>
 </head>
 <body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-body transition-colors duration-300 antialiased min-h-screen flex flex-col">
@@ -143,9 +143,9 @@
                     </div>
                 </div>
 
-                <!-- Upgrade Button -->
-                <button onclick="openPaywall('upgrade_header')" class="hidden sm:flex btn-sm bg-pro hover:bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md shadow-amber-500/20 transition-all hover:scale-105">
-                    Uppgradera
+                <!-- Upgrade Button - UPDATED STYLE (Fuchsia) -->
+                <button onclick="openPaywall('upgrade_header')" class="hidden sm:flex btn-sm bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-600 hover:to-purple-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg shadow-fuchsia-500/30 transition-all hover:scale-105 items-center gap-2">
+                    <i data-lucide="zap" class="w-4 h-4 fill-white"></i> Uppgradera
                 </button>
 
                 <!-- Auth Button (New) -->
@@ -288,18 +288,18 @@
                     </div>
 
                     <!-- PRO -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border-2 border-amber-400 relative flex flex-col shadow-xl shadow-amber-500/10 transform scale-105 z-10">
-                        <div class="absolute top-0 right-0 bg-amber-400 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg rounded-tr-lg">POPULÄR</div>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border-2 border-fuchsia-400 relative flex flex-col shadow-xl shadow-fuchsia-500/10 transform scale-105 z-10">
+                        <div class="absolute top-0 right-0 bg-fuchsia-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg rounded-tr-lg">POPULÄR</div>
                         <div class="mb-4">
-                            <h4 class="font-bold text-lg text-amber-500">PRO</h4>
+                            <h4 class="font-bold text-lg text-fuchsia-500">PRO</h4>
                             <div class="text-3xl font-bold mt-2">99 kr<span class="text-sm font-normal text-slate-500">/mån</span></div>
                         </div>
                         <ul class="space-y-3 mb-8 flex-1">
-                            <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> <strong>Obegränsade</strong> nedladdningar</li>
-                            <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> Tillgång till PRO flows (AI)</li>
-                            <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> Ladda upp & tjäna pengar</li>
+                            <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-fuchsia-500"></i> <strong>Obegränsade</strong> nedladdningar</li>
+                            <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-fuchsia-500"></i> Tillgång till PRO flows (AI)</li>
+                            <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-fuchsia-500"></i> Ladda upp & tjäna pengar</li>
                         </ul>
-                        <button onclick="openPaywall('pricing_footer')" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold transition-colors shadow-lg shadow-amber-500/20">Uppgradera nu</button>
+                        <button onclick="openPaywall('pricing_footer')" class="w-full py-3 rounded-xl bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold transition-colors shadow-lg shadow-fuchsia-500/20">Uppgradera nu</button>
                     </div>
 
                     <!-- ENTERPRISE -->
@@ -332,12 +332,13 @@
     <!-- Paywall Modal -->
     <div id="paywall-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closePaywall()">
         <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform" onclick="event.stopPropagation()">
-            <div class="bg-amber-500 p-6 text-white text-center relative overflow-hidden">
+            <!-- MODAL HEADER UPDATED TO FUCHSIA -->
+            <div class="bg-fuchsia-500 p-6 text-white text-center relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                 <div class="relative z-10">
                     <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm"><i data-lucide="lock" class="w-6 h-6 text-white"></i></div>
                     <h3 id="paywall-title" class="text-2xl font-bold font-heading">Uppgradera till PRO</h3>
-                    <p id="paywall-desc" class="text-amber-100 mt-1 text-sm">Lås upp detta workflow och få obegränsad tillgång.</p>
+                    <p id="paywall-desc" class="text-fuchsia-100 mt-1 text-sm">Lås upp detta workflow och få obegränsad tillgång.</p>
                 </div>
                 <button onclick="closePaywall()" class="absolute top-4 right-4 text-white/70 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
@@ -348,7 +349,8 @@
                     <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Stöd vidareutveckling</span></li>
                 </ul>
                 <div class="flex flex-col gap-3">
-                    <button onclick="handleProUpgrade(event)" class="w-full py-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg text-center shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] flex justify-center items-center gap-2">
+                    <!-- BUTTON UPDATED TO FUCHSIA -->
+                    <button onclick="handleProUpgrade(event)" class="w-full py-4 rounded-xl bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold text-lg text-center shadow-lg shadow-fuchsia-500/20 transition-all hover:scale-[1.02] flex justify-center items-center gap-2">
                         <span>Skaffa PRO för 99 kr/mån</span> <i data-lucide="credit-card" class="w-5 h-5"></i>
                     </button>
                     <p class="text-center text-xs text-slate-400">Ingen bindningstid. Avsluta när du vill.</p>
@@ -436,15 +438,15 @@
                     <p id="modal-description" class="text-slate-600 dark:text-slate-300 text-base leading-relaxed"></p>
                 </div>
                 
-                <!-- Multi-File Selection System (Hidden by default) -->
-                <div id="multi-file-selector" class="hidden mb-6 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-100 dark:border-amber-900/50 p-4">
-                    <div class="flex items-center gap-2 mb-3 text-amber-700 dark:text-amber-400 font-bold text-sm uppercase tracking-wide">
+                <!-- Multi-File Selection System - UPDATED TO FUCHSIA -->
+                <div id="multi-file-selector" class="hidden mb-6 bg-fuchsia-50 dark:bg-fuchsia-900/20 rounded-xl border border-fuchsia-100 dark:border-fuchsia-900/50 p-4">
+                    <div class="flex items-center gap-2 mb-3 text-fuchsia-700 dark:text-fuchsia-400 font-bold text-sm uppercase tracking-wide">
                         <i data-lucide="layers" class="w-4 h-4"></i> <span id="multi-file-header">Multi-Workflow System</span>
                     </div>
                     <div id="multi-file-options" class="space-y-2 mb-3">
                         <!-- Populated via JS -->
                     </div>
-                    <div id="multi-file-notes" class="text-[10px] text-slate-500 dark:text-slate-400 italic border-t border-amber-100 dark:border-amber-900/50 pt-2 mt-2 hidden">
+                    <div id="multi-file-notes" class="text-[10px] text-slate-500 dark:text-slate-400 italic border-t border-fuchsia-100 dark:border-fuchsia-900/50 pt-2 mt-2 hidden">
                         <!-- Notes populated via JS -->
                     </div>
                 </div>
@@ -477,83 +479,6 @@
         </div>
     </div>
 
-    <!-- Request Modal (New) -->
-    <div id="request-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeRequestModal()">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
-            <div class="p-6 relative">
-                <button onclick="closeRequestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
-                
-                <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-4 text-amber-600 dark:text-amber-400"><i data-lucide="lightbulb" class="w-6 h-6"></i></div>
-                <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Önska en automation</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Beskriv vad du vill automatisera. Ju mer detaljer desto bättre!</p>
-                
-                <form onsubmit="handleRequestSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Beskrivning</label>
-                        <textarea id="request-desc" required rows="4" placeholder="T.ex. Jag vill automatisera mina kvitton från e-post till Fortnox..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white resize-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post (för uppdateringar)</label>
-                        <input type="email" id="request-email" placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
-                    </div>
-                    <button type="submit" id="req-submit-btn" class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover transition-colors flex justify-center gap-2">
-                        <span>Skicka önskemål</span> <i data-lucide="send" class="w-4 h-4 mt-0.5"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Enterprise Modal (New) -->
-    <div id="enterprise-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeEnterpriseModal()">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
-            <div class="p-6 relative">
-                <button onclick="closeEnterpriseModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
-                
-                <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center mb-4 text-violet-600 dark:text-violet-400"><i data-lucide="rocket" class="w-6 h-6"></i></div>
-                <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">FlowVault Enterprise</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Vi bygger just nu Auto-Connect och djupare integrationer för större team. Skriv upp dig för att få förtur.</p>
-                
-                <form onsubmit="handleEnterpriseSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post</label>
-                        <input type="email" name="email" id="enterprise-email" required placeholder="namn@stortforetag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-violet-500 outline-none transition-all dark:text-white">
-                    </div>
-                    <button type="submit" id="ent-submit-btn" class="w-full py-3 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl transition-colors flex justify-center items-center gap-2 shadow-lg shadow-violet-500/20">
-                        <span>Gå med i väntelistan</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
-                </form>
-                <div class="text-[10px] text-center text-slate-400 mt-4">Ingen spam. Endast produktuppdateringar.</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI Chat Widget -->
-    <div id="ai-chat-widget" class="fixed bottom-6 right-6 z-[60]">
-        <button id="chat-toggle" class="flex items-center gap-2 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white p-4 rounded-full shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-105 group relative overflow-hidden" onclick="toggleChat()">
-            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full"></div>
-            <div class="relative flex items-center gap-2"><i data-lucide="message-circle" class="w-6 h-6"></i><span class="font-medium hidden sm:inline-block">Fråga AI om automation</span></div>
-            <span class="absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-20 -z-10 animate-ping"></span>
-        </button>
-        <div id="chat-panel" class="hidden absolute bottom-20 right-0 w-[90vw] sm:w-[380px] h-[500px] sm:h-[600px] max-h-[80vh] bg-white dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl flex flex-col transition-all duration-300 transform origin-bottom-right scale-95 opacity-0">
-            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30 rounded-t-2xl">
-                <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white shadow-sm"><i data-lucide="bot" class="w-5 h-5"></i></div><div><h3 class="font-bold text-sm text-slate-900 dark:text-white">FlowVault AI</h3><p class="text-[10px] text-slate-500 dark:text-slate-400">Powered by Claude & NordSym</p></div></div>
-                <button onclick="toggleChat()" class="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors text-slate-500"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 chat-messages bg-slate-50/30 dark:bg-transparent">
-                <div class="flex gap-3 message-enter"><div class="w-6 h-6 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center mt-1"><i data-lucide="bot" class="w-3.5 h-3.5 text-primary"></i></div><div class="bg-slate-100 dark:bg-slate-800 rounded-2xl rounded-tl-none p-3 text-sm text-slate-700 dark:text-slate-200 max-w-[85%] shadow-sm">Hej! 👋 Jag hjälper dig hitta rätt automation eller svara på tekniska frågor. Vad funderar du på?</div></div>
-            </div>
-            <div id="typing-indicator" class="hidden px-4 py-2 flex gap-3"><div class="w-6 h-6 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center"><i data-lucide="bot" class="w-3.5 h-3.5 text-primary"></i></div><div class="bg-slate-100 dark:bg-slate-800 rounded-2xl rounded-tl-none p-3 flex items-center gap-1 w-12 h-10"><div class="typing-dot text-slate-400"></div><div class="typing-dot text-slate-400"></div><div class="typing-dot text-slate-400"></div></div></div>
-            <div class="p-3 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-b-2xl">
-                <form id="chat-form" class="relative flex items-center" onsubmit="handleChatSubmit(event)">
-                    <input type="text" id="chat-input" placeholder="Fråga om Fortnox, n8n, etc..." class="w-full pl-4 pr-12 py-3 bg-slate-100 dark:bg-slate-800 border-0 rounded-xl focus:ring-2 focus:ring-primary/50 text-sm text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-500 transition-all" autocomplete="off">
-                    <button type="submit" class="absolute right-2 p-1.5 bg-primary hover:bg-primary-hover text-white rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" id="send-btn"><i data-lucide="send" class="w-4 h-4"></i></button>
-                </form>
-                <div class="text-[10px] text-center text-slate-400 mt-2">AI kan göra misstag. Kontrollera viktig information.</div>
-            </div>
-        </div>
-    </div>
-
     <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
         <div class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 font-medium">
@@ -562,11 +487,83 @@
         </div>
     </div>
 
+    <!-- Chat Widget UI -->
+    <button id="chat-toggle" onclick="toggleChat()" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary hover:bg-primary-hover text-white rounded-full shadow-lg hover:shadow-primary/50 transition-all hover:scale-105 active:scale-95 flex items-center justify-center chat-pulse group">
+        <i data-lucide="message-square" class="w-7 h-7 fill-white group-hover:scale-90 transition-transform"></i>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+    </button>
+
+    <div id="chat-panel" class="fixed bottom-24 right-6 z-50 w-full max-w-[360px] h-[550px] max-h-[70vh] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0 hidden">
+        <!-- Chat Header -->
+        <div class="p-4 bg-slate-900 dark:bg-slate-950 text-white flex items-center justify-between shrink-0 relative overflow-hidden">
+            <div class="absolute inset-0 bg-primary/10"></div>
+            <div class="flex items-center gap-3 relative z-10">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-blue-600 p-0.5 shadow-lg shadow-primary/20">
+                    <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
+                    <i data-lucide="bot" class="w-5 h-5 text-primary"></i>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-sm tracking-wide">FlowVault AI</h3>
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary border border-primary/30">BETA</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-[10px] text-emerald-400 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                    Online
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="p-1.5 hover:bg-white/10 rounded-lg transition-colors relative z-10"><i data-lucide="x" class="w-5 h-5 text-slate-300 hover:text-white"></i></button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50 dark:bg-slate-900/50 scroll-smooth">
+            <div class="flex gap-3 message-enter">
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 border border-primary/20">
+                    <i data-lucide="bot" class="w-4 h-4 text-primary"></i>
+                </div>
+                <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-3.5 rounded-2xl rounded-tl-none text-sm shadow-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Hej! Jag kan hjälpa dig hitta rätt automation eller svara på frågor om n8n och Make. Vad funderar du på? 👋
+                </div>
+            </div>
+            
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="flex gap-3 hidden">
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <i data-lucide="bot" class="w-4 h-4 text-primary"></i>
+                </div>
+                <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-4 rounded-2xl rounded-tl-none flex gap-1 items-center h-10 shadow-sm">
+                    <div class="typing-dot text-slate-400"></div>
+                    <div class="typing-dot text-slate-400"></div>
+                    <div class="typing-dot text-slate-400"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shrink-0">
+            <form onsubmit="handleChatSubmit(event)" class="relative flex items-center gap-2">
+                <input type="text" id="chat-input" placeholder="Skriv din fråga..." class="flex-1 pl-4 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none text-sm transition-all dark:text-white placeholder:text-slate-400" autocomplete="off">
+                <button type="submit" class="p-3 bg-primary hover:bg-primary-hover text-white rounded-xl transition-colors shadow-sm disabled:opacity-50 flex-shrink-0 active:scale-95">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </form>
+            <div class="text-center mt-2 opacity-60">
+                <div class="flex items-center justify-center gap-1.5">
+                    <i data-lucide="zap" class="w-3 h-3 text-primary"></i>
+                    <p class="text-[10px] text-slate-400">Powered by NordSym AB</p>
+                </div>
+                <p class="text-[9px] text-slate-400 mt-0.5">AI-agenten kan göra misstag.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
         // --- CONFIG ---
         const GITHUB_CONFIG = {
-            user: 'nordsym',          // Uppdaterat till rätt user
-            repo: 'flowvault-json',   // Ditt verifierade repo
+            user: 'nordsym',          
+            repo: 'flowvault',        // Updated repo name
             branch: 'main'            
         };
 
@@ -601,7 +598,6 @@
 
         // --- DEV MODE OVERRIDE ---
         // Tvingar användaren till PRO-nivå för att låsa upp alla funktioner under utveckling.
-        // Kommentera bort raden nedan för att testa som gratisanvändare igen.
         userState.tier = 'pro';
         console.log("🔧 DEV MODE: PRO tier forced active");
         // -------------------------
@@ -711,15 +707,24 @@
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
         const modalHelpBtn = document.getElementById('modal-help-btn');
+        
+        // Chat Elements - Restored
         const chatPanel = document.getElementById('chat-panel');
         const chatToggle = document.getElementById('chat-toggle');
         const chatInput = document.getElementById('chat-input');
         const chatMessages = document.getElementById('chat-messages');
         const typingIndicator = document.getElementById('typing-indicator');
+
         const paywallModal = document.getElementById('paywall-modal');
         const dlCountEl = document.getElementById('dl-count');
-        const counterEl = document.getElementById('workflow-counter'); // NY: Referens till räknaren
-        const multiFileSelector = document.getElementById('multi-file-selector'); // NY: Multi-file container
+        const counterEl = document.getElementById('workflow-counter'); 
+        const multiFileSelector = document.getElementById('multi-file-selector'); 
+
+        // --- AUTH & MODAL ELEMENTS ---
+        const authModal = document.getElementById('auth-modal');
+        const authBtnDot = document.getElementById('auth-status-dot');
+        const requestModal = document.getElementById('request-modal'); 
+        const enterpriseModal = document.getElementById('enterprise-modal');
 
         // --- MAIN FUNCTIONS ---
 
@@ -743,16 +748,13 @@
                     dlCountEl.classList.add('text-red-500');
                 }
             } else {
-                document.getElementById('download-counter').innerHTML = '<span class="text-xs font-bold text-amber-500 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded border border-amber-200 dark:border-amber-700">PRO PLAN</span>';
+                document.getElementById('download-counter').innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700">PRO PLAN</span>';
             }
             updateAuthUI();
         }
 
         // --- AUTH SYSTEM (Frontend Mock for n8n/Airtable) ---
-        const authModal = document.getElementById('auth-modal');
-        const authBtnDot = document.getElementById('auth-status-dot');
-        const requestModal = document.getElementById('request-modal'); 
-        const enterpriseModal = document.getElementById('enterprise-modal');
+        // ... (existing helper functions for modals) ...
 
         function handleAuthClick() {
             if (userState.isAuthenticated) {
@@ -773,7 +775,6 @@
             setTimeout(() => authModal.classList.add('hidden'), 300);
         }
 
-        // --- REQUEST MODAL SYSTEM ---
         function openRequestModal() {
             if (userState.isAuthenticated && userState.email) {
                 document.getElementById('request-email').value = userState.email;
@@ -787,7 +788,6 @@
             setTimeout(() => requestModal.classList.add('hidden'), 300);
         }
 
-        // --- ENTERPRISE MODAL SYSTEM ---
         function openEnterpriseModal() {
             if (userState.isAuthenticated && userState.email) {
                 document.getElementById('enterprise-email').value = userState.email;
@@ -811,13 +811,12 @@
             btn.disabled = true;
 
             try {
-                // Use FlowVault Request Webhook for Enterprise interest
                 const response = await fetch(API_ENDPOINTS.request, {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         email: email,
-                        description: "ENTERPRISE WAITLIST REQUEST", // Standardized subject for webhook
+                        description: "ENTERPRISE WAITLIST REQUEST", 
                         type: "enterprise_waitlist"
                     })
                 });
@@ -881,7 +880,7 @@
             if (view === 'profile') {
                 document.getElementById('profile-email').textContent = userState.email;
                 document.getElementById('profile-tier').textContent = userState.tier === 'pro' ? 'PRO Plan' : 'Free Plan';
-                document.getElementById('profile-tier').className = `inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border ${userState.tier === 'pro' ? 'bg-amber-100 text-amber-600 border-amber-200' : 'bg-slate-100 text-slate-600 border-slate-200'}`;
+                document.getElementById('profile-tier').className = `inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border ${userState.tier === 'pro' ? 'bg-fuchsia-100 text-fuchsia-600 border-fuchsia-200' : 'bg-slate-100 text-slate-600 border-slate-200'}`;
                 document.getElementById('profile-avatar').textContent = userState.email.charAt(0).toUpperCase();
                 document.getElementById('profile-dl-count').textContent = userState.downloads.length;
                 document.getElementById('profile-fav-count').textContent = userState.favorites.length;
@@ -896,19 +895,15 @@
             }
         }
 
-        // --- AUTH API HANDLERS ---
         async function handleEmailSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email').value;
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
-            
-            // UI Loading
             btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
             btn.disabled = true;
 
             try {
-                // Call n8n webhook to send email
                 const response = await fetch(API_ENDPOINTS.authInit, { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' },
@@ -954,11 +949,8 @@
                     userState.isAuthenticated = true;
                     userState.email = email;
                     userState.tier = (data.tier || 'free').toLowerCase();
-                    // Optional: Update downloadsRemaining if returned from API
                     if (data.downloads_remaining !== undefined) userState.downloadsRemaining = data.downloads_remaining;
-                    
                     saveUserState();
-                    
                     showToast("Inloggning lyckades!");
                     closeAuthModal();
                     updateAuthUI();
@@ -981,7 +973,6 @@
             userState.token = null;
             userState.tier = 'free'; 
             saveUserState();
-            
             showToast("Utloggad");
             closeAuthModal();
             updateAuthUI();
@@ -1005,7 +996,8 @@
                 return;
             }
 
-            const btn = e ? e.currentTarget : document.querySelector('#paywall-modal button.bg-amber-500');
+            // Fixed Selector: Changed from .bg-amber-500 to .bg-fuchsia-500
+            const btn = e ? e.currentTarget : document.querySelector('#paywall-modal button.bg-fuchsia-500');
             const originalContent = btn.innerHTML;
             btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Väntar på Stripe...';
             btn.disabled = true;
@@ -1063,7 +1055,6 @@
             setTimeout(() => paywallModal.classList.add('hidden'), 300);
         }
 
-        // OPTIMIZATION: Separated Fetch from Render to prevent API spam
         async function fetchWorkflows() {
             if (!USE_BACKEND) return;
             try {
@@ -1071,8 +1062,8 @@
                 if (response.ok) {
                     const data = await response.json();
                     WORKFLOWS = Array.isArray(data) ? data : (data.workflows || STATIC_WORKFLOWS);
-                    renderWorkflows(); // Re-render with fresh data
-                    renderStats();     // Update stats with real numbers
+                    renderWorkflows(); 
+                    renderStats();     
                 }
             } catch (error) {
                 console.warn('Backend unavailable, using static data:', error);
@@ -1080,8 +1071,6 @@
         }
 
         function renderWorkflows() {
-            // NOTE: API fetch removed from here. Now strictly synchronous filtering.
-
             let filtered = WORKFLOWS.filter(wf => {
                 const matchesSearch = wf.title.toLowerCase().includes(state.search.toLowerCase()) || wf.description.toLowerCase().includes(state.search.toLowerCase());
                 
@@ -1089,15 +1078,10 @@
                 if (state.categoryFilter === 'favorites') {
                     matchesCategory = userState.favorites.includes(wf.id);
                 } else if (state.categoryFilter !== 'all') {
-                    // ROBUST FIX: Case-insensitive & Data Type Normalization
-                    // 1. Hämta data säkert (Airtable skickar ofta 'Category' med stort C)
                     const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
-                    
-                    // 2. Normalisera filter (ID och Label)
                     const targetId = state.categoryFilter.toLowerCase();
                     const targetLabel = CATEGORIES.find(c => c.id === state.categoryFilter)?.label.toLowerCase() || '';
 
-                    // 3. Skapa platt array av workflow-kategorier (lowercase)
                     let wfCats = [];
                     if (Array.isArray(rawCat)) {
                         wfCats = rawCat.map(c => String(c).toLowerCase());
@@ -1105,8 +1089,6 @@
                         wfCats = [rawCat.toLowerCase()];
                     }
 
-                    // 4. Matcha: Kolla om ID eller Label finns i workflow-kategorierna
-                    // Använder 'includes' åt båda hållen för maximal träffsäkerhet
                     matchesCategory = wfCats.some(cat => 
                         cat === targetId || 
                         cat === targetLabel ||
@@ -1121,7 +1103,6 @@
                 return matchesSearch && matchesCategory && matchesPlatform && matchesDifficulty;
             });
 
-            // NY: Uppdatera räknaren
             if (counterEl) {
                 counterEl.innerHTML = `Visar <span class="font-bold text-slate-900 dark:text-white">${filtered.length}</span> av <span class="font-medium">${WORKFLOWS.length}</span> automationer`;
             }
@@ -1142,43 +1123,25 @@
                     badge = `<span class="badge-pro px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"><i data-lucide="crown" class="w-3 h-3"></i> PRO</span>`;
                 }
 
-                // --- NEW CATEGORY ICON LOGIC ---
-                // 1. Safe extraction
                 const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
-                // 2. Normalize to an ID we can look up (take first if array)
                 const searchStr = (Array.isArray(rawCat) ? rawCat[0] : rawCat)?.toString().toLowerCase() || '';
 
-                // 3. Find matching category object with aliases
                 const foundCat = CATEGORIES.find(c => {
                     if (c.id === 'all') return false;
                     const directMatch = c.id === searchStr || c.label.toLowerCase() === searchStr;
-                    // Check aliases if defined
                     const aliasMatch = c.aliases && c.aliases.some(alias => searchStr.includes(alias));
                     return directMatch || aliasMatch;
                 });
 
                 let catIcon = '';
                 if (foundCat) {
-                    // Check if Emoji (simple heuristics: non-ascii char)
                     const isEmoji = foundCat.icon.match(/\p{Emoji}/u);
-                    
                     if (isEmoji) {
                          catIcon = `<span class="text-sm opacity-80" title="${foundCat.label}">${foundCat.icon}</span>`;
                     } else {
-                         // Lucide icon
                          catIcon = `<i data-lucide="${foundCat.icon}" class="w-4 h-4 text-slate-400" title="${foundCat.label}"></i>`;
                     }
                 }
-                // -------------------------------
-                
-                // --- MULTI-FILE INDICATOR ---
-                const fileCount = wf.fileCount || 1;
-                const fileBadge = fileCount > 1 ? `
-                    <span class="bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 border border-amber-200 dark:border-amber-900">
-                        <i data-lucide="layers" class="w-3 h-3"></i> ${fileCount} Filer
-                    </span>
-                ` : '';
-                // -----------------------------
 
                 const isLocked = wf.proBadge && userState.tier === 'free';
                 const actionIcon = isLocked ? 'lock' : 'arrow-right';
@@ -1186,12 +1149,11 @@
                 const isFav = userState.favorites.includes(wf.id);
 
                 return `
-                <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border ${wf.proBadge ? 'border-amber-200 dark:border-amber-900/50' : 'border-slate-200 dark:border-slate-800'} p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full cursor-pointer" onclick="handleWorkflowClick('${wf.id}')">
+                <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border ${wf.proBadge ? 'border-fuchsia-200 dark:border-fuchsia-900/50' : 'border-slate-200 dark:border-slate-800'} p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full cursor-pointer" onclick="handleWorkflowClick('${wf.id}')">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider platform-${wf.platform}">${wf.platform}</span>
-                            ${catIcon}
-                            ${fileBadge}
+                            ${catIcon} 
                             ${badge}
                         </div>
                         <div class="flex items-center gap-2">
@@ -1218,10 +1180,8 @@
             lucide.createIcons();
         }
 
-        // --- FILTER ACTIONS ---
         function toggleFavorite(e, id) {
             e.stopPropagation(); 
-            
             const index = userState.favorites.indexOf(id);
             if (index === -1) {
                 userState.favorites.push(id);
@@ -1229,7 +1189,6 @@
             } else {
                 userState.favorites.splice(index, 1);
             }
-            
             localStorage.setItem('flowvault_user_state', JSON.stringify(userState));
             renderWorkflows(); 
         }
@@ -1241,7 +1200,6 @@
         function setSort(val) { state.sort = val; renderWorkflows(); }
         function resetApp() { state.search = ''; state.categoryFilter = 'all'; searchInputEl.value = ''; renderControls(); renderWorkflows(); }
 
-        // --- RENDER CONTROLS ---
         function renderControls() {
             filtersEl.innerHTML = CATEGORIES.map(cat => {
                 const iconHtml = cat.id === 'swedish' 
@@ -1260,7 +1218,7 @@
             const wf = WORKFLOWS.find(w => w.id === id);
             if (!wf) return;
             currentModalWorkflow = wf;
-            currentFileSelection = 'all'; // Reset default
+            currentFileSelection = 'all';
 
             document.getElementById('modal-title').textContent = wf.title;
             document.getElementById('modal-description').textContent = wf.description;
@@ -1276,44 +1234,40 @@
             modalHelpBtn.href = getEmailLink(wf);
             document.getElementById('btn-download').onclick = () => tryDownload(wf);
 
-            // --- MULTI-FILE UI LOGIC ---
+            // --- Multi-File Logic ---
             const selectorEl = document.getElementById('multi-file-selector');
             const optionsEl = document.getElementById('multi-file-options');
             const notesEl = document.getElementById('multi-file-notes');
-            const headerEl = document.getElementById('multi-file-header');
 
             if (wf.fileCount && wf.fileCount > 1) {
                 selectorEl.classList.remove('hidden');
-                headerEl.textContent = `Multi-Workflow System (${wf.fileCount} Filer)`;
-                
-                // Parse descriptions
                 const descLines = wf.fileDescriptions ? wf.fileDescriptions.split('\n') : [];
                 
                 let html = `
-                    <label class="flex items-center gap-3 p-3 rounded-lg border bg-white dark:bg-slate-900 cursor-pointer hover:border-amber-400 transition-colors group radio-label radio-selected" onclick="selectFileOption('all', this)">
+                    <label class="flex items-center gap-3 p-3 rounded-lg border bg-white dark:bg-slate-900 cursor-pointer hover:border-fuchsia-400 transition-colors group radio-label radio-selected" onclick="selectFileOption('all', this)">
                         <div class="relative flex items-center justify-center">
                             <input type="radio" name="file-select" value="all" checked class="peer sr-only">
-                            <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
+                            <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-fuchsia-500 peer-checked:bg-fuchsia-500 transition-colors"></div>
                             <div class="absolute w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity"></div>
                         </div>
                         <div class="flex-1">
-                            <div class="text-sm font-bold text-slate-800 dark:text-white group-hover:text-amber-600 transition-colors">Alla ${wf.fileCount} workflows (Komplett system)</div>
+                            <div class="text-sm font-bold text-slate-800 dark:text-white group-hover:text-fuchsia-600 transition-colors">Alla ${wf.fileCount} workflows (Komplett system)</div>
                             <div class="text-xs text-slate-500">Laddas ner som en ZIP-fil</div>
                         </div>
-                        <i data-lucide="package" class="w-4 h-4 text-amber-500"></i>
+                        <i data-lucide="package" class="w-4 h-4 text-fuchsia-500"></i>
                     </label>
                 `;
 
                 for (let i = 1; i <= wf.fileCount; i++) {
                     const desc = descLines[i-1] || `Del ${i}`;
                     html += `
-                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 cursor-pointer hover:border-amber-400 transition-colors group radio-label" onclick="selectFileOption(${i}, this)">
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 cursor-pointer hover:border-fuchsia-400 transition-colors group radio-label" onclick="selectFileOption(${i}, this)">
                             <div class="relative flex items-center justify-center">
                                 <input type="radio" name="file-select" value="${i}" class="peer sr-only">
-                                <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
+                                <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-fuchsia-500 peer-checked:bg-fuchsia-500 transition-colors"></div>
                                 <div class="absolute w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity"></div>
                             </div>
-                            <div class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-amber-600 transition-colors">${desc}</div>
+                            <div class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-fuchsia-600 transition-colors">${desc}</div>
                         </label>
                     `;
                 }
@@ -1330,7 +1284,6 @@
             } else {
                 selectorEl.classList.add('hidden');
             }
-            // ---------------------------
 
             modalBackdrop.classList.remove('hidden');
             setTimeout(() => { modalBackdrop.classList.remove('opacity-0'); modalContent.classList.remove('scale-95', 'opacity-0'); modalContent.classList.add('scale-100', 'opacity-100'); }, 10);
@@ -1339,15 +1292,13 @@
 
         function selectFileOption(val, labelEl) {
             currentFileSelection = val;
-            // Update UI styling
             document.querySelectorAll('.radio-label').forEach(el => {
-                el.classList.remove('radio-selected', 'border-amber-500', 'bg-white', 'dark:bg-slate-900');
+                el.classList.remove('radio-selected', 'border-fuchsia-500', 'bg-white', 'dark:bg-slate-900');
                 el.classList.add('border-slate-200', 'dark:border-slate-700', 'bg-white/50', 'dark:bg-slate-900/50');
             });
             labelEl.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white/50', 'dark:bg-slate-900/50');
             labelEl.classList.add('radio-selected', 'bg-white', 'dark:bg-slate-900');
             
-            // Check radio input
             const radio = labelEl.querySelector('input');
             if(radio) radio.checked = true;
         }
@@ -1392,15 +1343,13 @@
                     const fetchPromises = [];
                     
                     for (let i = 1; i <= workflow.fileCount; i++) {
-                        // Pattern strategies: ID_1.json, ID.json (if i=1 fallback), ID-1.json
                         const patterns = [`${githubId}_${i}.json`, `${githubId}-${i}.json`];
-                        if (i === 1) patterns.push(`${githubId}.json`); // Fallback for first file
+                        if (i === 1) patterns.push(`${githubId}.json`); 
                         
                         const p = (async () => {
                             let content = null;
-                            let filename = `${githubId}_${i}.json`; // Default save name
+                            let filename = `${githubId}_${i}.json`; 
 
-                            // Try patterns
                             for (const pattern of patterns) {
                                 try {
                                     const res = await fetch(`${baseUrl}/${pattern}`);
@@ -1441,21 +1390,17 @@
                     let targetUrl = '';
                     let saveName = `${githubId}.json`;
 
-                    // Simple Logic: check patterns
                     const patterns = [];
                     
                     if (workflow.fileCount > 1 && currentFileSelection !== 'all') {
-                        // User selected specific part
                         patterns.push(`${githubId}_${currentFileSelection}.json`);
                         patterns.push(`${githubId}-${currentFileSelection}.json`);
                         saveName = `${githubId}_part_${currentFileSelection}.json`;
                     } else {
-                        // Standard single file workflow
                         patterns.push(`${githubId}.json`);
-                        patterns.push(`${githubId}_1.json`); // Sometimes legacy
+                        patterns.push(`${githubId}_1.json`); 
                     }
 
-                    // Hunt for file
                     let foundUrl = null;
                     for (const pattern of patterns) {
                         try {
@@ -1485,7 +1430,6 @@
                     showToast("Nedladdning startad! 🚀");
                 }
 
-                // Tracking
                 if (USE_BACKEND) {
                     fetch(API_ENDPOINTS.download(workflow.id), {
                         method: 'POST',
@@ -1512,8 +1456,6 @@
                 btn.disabled = false;
             }
         }
-
-        // REMOVED: copyJSON function
 
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast'); document.getElementById('toast-message').textContent = message;
@@ -1555,34 +1497,27 @@
             let stars = [];
             let meteors = [];
 
-            // Configuration
-            const STAR_COUNT = 400; // Amount of background stars
-            const METEOR_COUNT = 4; // Max concurrent meteors
+            const STAR_COUNT = 400; 
+            const METEOR_COUNT = 4; 
             
             function resize() {
                 width = window.innerWidth;
                 height = window.innerHeight;
                 canvas.width = width;
                 canvas.height = height;
-                
-                // FIX: Redistribute stars immediately on resize to prevent empty gaps
-                if (stars.length > 0) {
-                    stars.forEach(star => star.reset(true));
-                }
+                if (stars.length > 0) stars.forEach(star => star.reset(true));
             }
             
             window.addEventListener('resize', resize);
             resize();
 
             class Star {
-                constructor() {
-                    this.reset(true);
-                }
+                constructor() { this.reset(true); }
                 reset(initial = false) {
                     this.x = Math.random() * width;
                     this.y = initial ? Math.random() * height : -10;
-                    this.size = Math.random() * 1.5 + 0.5; // 0.5px to 2px
-                    this.speed = Math.random() * 0.2 + 0.05; // Slow drift
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.speed = Math.random() * 0.2 + 0.05;
                     this.opacity = Math.random() * 0.5 + 0.1;
                     this.twinkleDir = Math.random() > 0.5 ? 0.005 : -0.005;
                 }
@@ -1601,38 +1536,30 @@
             }
 
             class Meteor {
-                constructor() {
-                    this.reset();
-                }
+                constructor() { this.reset(); }
                 reset() {
                     this.x = Math.random() * width;
                     this.y = -100;
                     this.length = Math.random() * 80 + 20;
                     this.speed = Math.random() * 10 + 5;
                     this.size = Math.random() * 1 + 0.5;
-                    this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); // ~45 degrees
+                    this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
                     this.active = false;
-                    
-                    // Random activation delay
                     setTimeout(() => { this.active = true; }, Math.random() * 5000);
                 }
                 update() {
                     if (!this.active) return;
-                    this.x -= this.speed * Math.cos(this.angle); // Move left slightly
-                    this.y += this.speed * Math.sin(this.angle); // Move down
-                    
+                    this.x -= this.speed * Math.cos(this.angle);
+                    this.y += this.speed * Math.sin(this.angle);
                     if (this.y > height + 100 || this.x < -100) this.reset();
                 }
                 draw() {
                     if (!this.active) return;
-                    // Create gradient trail
                     const endX = this.x + this.length * Math.cos(this.angle);
                     const endY = this.y - this.length * Math.sin(this.angle);
-                    
                     const gradient = ctx.createLinearGradient(this.x, this.y, endX, endY);
-                    gradient.addColorStop(0, 'rgba(0, 191, 255, 1)'); // Primary Cyan Head
-                    gradient.addColorStop(1, 'rgba(0, 191, 255, 0)'); // Fade out Tail
-                    
+                    gradient.addColorStop(0, 'rgba(0, 191, 255, 1)'); 
+                    gradient.addColorStop(1, 'rgba(0, 191, 255, 0)'); 
                     ctx.strokeStyle = gradient;
                     ctx.lineWidth = this.size;
                     ctx.lineCap = 'round';
@@ -1643,28 +1570,21 @@
                 }
             }
 
-            // Initialize Objects
             for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
             for (let i = 0; i < METEOR_COUNT; i++) meteors.push(new Meteor());
 
-            // Animation Loop
             function animate() {
                 ctx.clearRect(0, 0, width, height);
-                
-                // Only animate if dark mode is roughly active (performance optimization)
                 if (document.documentElement.classList.contains('dark')) {
                     stars.forEach(star => { star.update(); star.draw(); });
                     meteors.forEach(meteor => { meteor.update(); meteor.draw(); });
                 }
-                
                 requestAnimationFrame(animate);
             }
-            
             animate();
         }
 
         // --- AI CHAT LOGIC ---
-        
         function toggleChat() { chatState.isOpen = !chatState.isOpen; if (chatState.isOpen) { chatPanel.classList.remove('hidden'); setTimeout(() => { chatPanel.classList.remove('scale-95', 'opacity-0'); chatPanel.classList.add('scale-100', 'opacity-100'); chatInput.focus(); }, 10); } else { chatPanel.classList.remove('scale-100', 'opacity-100'); chatPanel.classList.add('scale-95', 'opacity-0'); setTimeout(() => chatPanel.classList.add('hidden'), 300); } }
         
         async function handleChatSubmit(e) { 
@@ -1693,22 +1613,13 @@
                     guardrailsInput: text,
                     sessionId: sessionId,
                     userId: userState.email || 'anonymous',
-                    metadata: {
-                        page: document.title,
-                        context: "FlowVault Web Widget"
-                    }
+                    metadata: { page: document.title, context: "FlowVault Web Widget" }
                 };
 
-                const baseUrl = API_ENDPOINTS.chat;
-                const urlWithParams = `${baseUrl}?sessionId=${sessionId}`;
-                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(urlWithParams);
-
-                const response = await fetch(proxyUrl, {
+                // UPDATED: Direct call to specific n8n chat webhook (No Proxy)
+                const response = await fetch(API_ENDPOINTS.chat, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
@@ -1716,7 +1627,6 @@
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
                 const data = await response.json();
-                
                 let aiResponse = "Jag fick inget svar. Försök igen.";
                 
                 if (data.output) aiResponse = data.output;
@@ -1731,15 +1641,9 @@
             } catch (error) {
                 console.error('Chat error details:', error);
                 typingIndicator.classList.add('hidden');
-                
                 let errorMsg = "Hoppsan! Något gick fel.";
-                
-                if (error.message === 'N8N_404') {
-                    errorMsg = "Agenten svarar inte (404). \n\n⚠️ VIKTIGT: Gå till n8n och se till att switchen 'Active' (uppe till höger) är GRÖN.";
-                } else if (error.message.includes('Failed to fetch')) {
-                    errorMsg = "Kunde inte nå servern. Det verkar vara ett nätverks- eller brandväggsproblem.";
-                }
-                
+                if (error.message === 'N8N_404') errorMsg = "Agenten svarar inte (404). \n\n⚠️ VIKTIGT: Gå till n8n och se till att switchen 'Active' (uppe till höger) är GRÖN.";
+                else if (error.message.includes('Failed to fetch')) errorMsg = "Kunde inte nå servern. Kontrollera CORS i n8n eller nätverksanslutningen.";
                 addMessage('assistant', errorMsg);
             }
         }
@@ -1747,7 +1651,6 @@
         function addMessage(role, content) { 
             const msgDiv = document.createElement('div'); msgDiv.className = 'flex gap-3 message-enter mb-4 ' + (role === 'user' ? 'flex-row-reverse' : '');
             const formattedContent = content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-primary hover:underline underline-offset-2 break-all">$1</a>').replace(/\n/g, '<br>');
-            
             const bubbleClass = role === 'user' ? 'bg-primary text-white rounded-2xl rounded-tr-none' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-2xl rounded-tl-none';
             msgDiv.innerHTML = `<div class="${bubbleClass} p-3 text-sm max-w-[85%] shadow-sm leading-relaxed">${formattedContent}</div>`;
             chatMessages.appendChild(msgDiv); chatMessages.scrollTop = chatMessages.scrollHeight; 
