@@ -18,6 +18,9 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
+    <!-- JSZip for Multi-file downloads -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
     <!-- Configuration -->
     <script>
         tailwind.config = {
@@ -100,6 +103,10 @@
         @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
         .message-enter { animation: slideInUp 0.3s ease-out forwards; }
         @keyframes slideInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Radio Button Custom Style */
+        .radio-selected { background-color: rgba(245, 158, 11, 0.1); border-color: #f59e0b; }
+        .dark .radio-selected { background-color: rgba(245, 158, 11, 0.2); border-color: #f59e0b; }
     </style>
 </head>
 <body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-body transition-colors duration-300 antialiased min-h-screen flex flex-col">
@@ -428,6 +435,20 @@
                 <div class="prose dark:prose-invert max-w-none mb-6">
                     <p id="modal-description" class="text-slate-600 dark:text-slate-300 text-base leading-relaxed"></p>
                 </div>
+                
+                <!-- Multi-File Selection System (Hidden by default) -->
+                <div id="multi-file-selector" class="hidden mb-6 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-100 dark:border-amber-900/50 p-4">
+                    <div class="flex items-center gap-2 mb-3 text-amber-700 dark:text-amber-400 font-bold text-sm uppercase tracking-wide">
+                        <i data-lucide="layers" class="w-4 h-4"></i> <span id="multi-file-header">Multi-Workflow System</span>
+                    </div>
+                    <div id="multi-file-options" class="space-y-2 mb-3">
+                        <!-- Populated via JS -->
+                    </div>
+                    <div id="multi-file-notes" class="text-[10px] text-slate-500 dark:text-slate-400 italic border-t border-amber-100 dark:border-amber-900/50 pt-2 mt-2 hidden">
+                        <!-- Notes populated via JS -->
+                    </div>
+                </div>
+
                 <!-- Modal Help Banner -->
                 <div class="p-4 bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-xl border border-primary/20 mb-6 flex items-start gap-4">
                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mt-1"><i data-lucide="headphones" class="w-5 h-5 text-primary"></i></div>
@@ -577,6 +598,14 @@
             token: null,
             resetDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString()
         };
+
+        // --- DEV MODE OVERRIDE ---
+        // Tvingar användaren till PRO-nivå för att låsa upp alla funktioner under utveckling.
+        // Kommentera bort raden nedan för att testa som gratisanvändare igen.
+        userState.tier = 'pro';
+        console.log("🔧 DEV MODE: PRO tier forced active");
+        // -------------------------
+
         // Migration safeguard
         if (!userState.favorites) userState.favorites = [];
         if (typeof userState.isAuthenticated === 'undefined') userState.isAuthenticated = false;
@@ -603,7 +632,45 @@
         const STATIC_WORKFLOWS = [
             // KATEGORI: 🇸🇪 Svenska Integrationer (20)
             { id: "fortnox-invoice-sync", title: "Fortnox Faktura till Sheets", description: "Synka godkända fakturor från Fortnox till Google Sheets automatiskt varje natt.", category: "swedish", tags: ["fortnox", "faktura", "sheets", "ekonomi"], platform: "n8n", verified: true, downloads: 842, difficulty: "intermediate", estimatedTime: "15 min", useCases: ["Småföretag", "Konsulter"], author: "NordSym", category: "swedish" },
-            { id: "kvitto-fortnox", title: "Kvittoredovisning Dropbox → Fortnox", description: "Hämtar kvitton från Dropbox, kör OCR, och skapar verifikatutkast i Fortnox automatiskt.", category: "swedish", tags: ["fortnox", "dropbox", "ocr", "kvitto"], platform: "n8n", verified: true, downloads: 620, difficulty: "advanced", estimatedTime: "40 min", useCases: ["Konsulter", "Småföretag"], author: "NordSym", category: "swedish" },
+            // UPDATED: Added fileCount for testing multi-file system
+            { 
+                id: "kvitto-fortnox", 
+                title: "Kvittoredovisning Dropbox → Fortnox (Complete System)", 
+                description: "Komplett system. Hämtar kvitton från Dropbox, kör OCR, och skapar verifikatutkast i Fortnox automatiskt. Innehåller även felhanteringsmodul.", 
+                category: "swedish", 
+                tags: ["fortnox", "dropbox", "ocr", "kvitto"], 
+                platform: "n8n", 
+                verified: true, 
+                downloads: 620, 
+                difficulty: "advanced", 
+                estimatedTime: "40 min", 
+                useCases: ["Konsulter", "Småföretag"], 
+                author: "NordSym", 
+                category: "swedish",
+                fileCount: 3, 
+                workflowType: "modular",
+                fileDescriptions: "Del 1: Huvudprocess (Dropbox trigger)\nDel 2: OCR & AI Processing\nDel 3: Fortnox Integration & Error Handling",
+                installationNotes: "Importera delarna i ordning 1-3. Se till att koppla ihop webhook-noderna enligt diagrammet i dokumentationen."
+            },
+            // NEW: Multi-file Agent Test
+            {
+                id: "ai-agent-swarm",
+                title: "AI Agent Swarm - Content Team",
+                description: "Ett team av 5 specialiserade AI-agenter som samarbetar. Research, Skrivande, SEO, Granskning och Publicering.",
+                category: "ai-automation",
+                tags: ["ai", "agents", "openai", "automation"],
+                platform: "n8n",
+                verified: true,
+                downloads: 1205,
+                difficulty: "advanced",
+                estimatedTime: "2h",
+                useCases: ["Marknadsavdelningar", "Byråer"],
+                author: "NordSym",
+                fileCount: 5,
+                workflowType: "bundle",
+                fileDescriptions: "Agent 1: Researcher\nAgent 2: Writer\nAgent 3: SEO Specialist\nAgent 4: Editor\nAgent 5: Publisher",
+                installationNotes: "Dessa agenter använder n8n:s nya LangChain-noder. Kräver n8n version 1.0+."
+            },
             { id: "visma-bokio-sync", title: "Stripe till Visma/Bokio", description: "Sammanställ dagliga utbetalningar från Stripe och skapa samlat verifikat i Visma eller Bokio.", category: "swedish", tags: ["stripe", "visma", "bokio", "betalningar"], platform: "n8n", verified: true, downloads: 410, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-handlare"], author: "NordSym", category: "swedish" },
             { id: "rot-xml-generator", title: "ROT-avdrag XML Generator", description: "Skapar XML-fil för Skatteverket baserat på arbetsorder. Perfekt för byggfirmor.", category: "swedish", tags: ["skatteverket", "rot", "xml", "bygg"], platform: "n8n", verified: true, downloads: 420, difficulty: "advanced", estimatedTime: "60 min", useCases: ["Byggfirmor", "Hantverkare"], author: "NordSym", category: "swedish" },
             { id: "scrive-signing", title: "Avtalssignering via Scrive", description: "Skapa avtal från Google Docs-mall, konvertera till PDF och skicka för e-signering via Scrive.", category: "swedish", tags: ["scrive", "avtal", "esignering"], platform: "n8n", verified: true, downloads: 380, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Konsulter", "Säljare"], author: "NordSym", category: "swedish" },
@@ -632,6 +699,7 @@
         let state = { search: '', categoryFilter: 'all', platformFilter: 'all', difficultyFilter: 'all', sort: 'popular' };
         let chatState = { isOpen: false, history: [] };
         let currentModalWorkflow = null;
+        let currentFileSelection = 'all'; // 'all' or index (1, 2, 3...)
 
         // --- DOM Elements ---
         const gridEl = document.getElementById('workflow-grid');
@@ -651,6 +719,7 @@
         const paywallModal = document.getElementById('paywall-modal');
         const dlCountEl = document.getElementById('dl-count');
         const counterEl = document.getElementById('workflow-counter'); // NY: Referens till räknaren
+        const multiFileSelector = document.getElementById('multi-file-selector'); // NY: Multi-file container
 
         // --- MAIN FUNCTIONS ---
 
@@ -1101,6 +1170,15 @@
                     }
                 }
                 // -------------------------------
+                
+                // --- MULTI-FILE INDICATOR ---
+                const fileCount = wf.fileCount || 1;
+                const fileBadge = fileCount > 1 ? `
+                    <span class="bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 border border-amber-200 dark:border-amber-900">
+                        <i data-lucide="layers" class="w-3 h-3"></i> ${fileCount} Filer
+                    </span>
+                ` : '';
+                // -----------------------------
 
                 const isLocked = wf.proBadge && userState.tier === 'free';
                 const actionIcon = isLocked ? 'lock' : 'arrow-right';
@@ -1112,7 +1190,8 @@
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider platform-${wf.platform}">${wf.platform}</span>
-                            ${catIcon} <!-- Injected Icon -->
+                            ${catIcon}
+                            ${fileBadge}
                             ${badge}
                         </div>
                         <div class="flex items-center gap-2">
@@ -1181,6 +1260,7 @@
             const wf = WORKFLOWS.find(w => w.id === id);
             if (!wf) return;
             currentModalWorkflow = wf;
+            currentFileSelection = 'all'; // Reset default
 
             document.getElementById('modal-title').textContent = wf.title;
             document.getElementById('modal-description').textContent = wf.description;
@@ -1195,11 +1275,81 @@
             
             modalHelpBtn.href = getEmailLink(wf);
             document.getElementById('btn-download').onclick = () => tryDownload(wf);
-            // Removed btn-copy event listener
+
+            // --- MULTI-FILE UI LOGIC ---
+            const selectorEl = document.getElementById('multi-file-selector');
+            const optionsEl = document.getElementById('multi-file-options');
+            const notesEl = document.getElementById('multi-file-notes');
+            const headerEl = document.getElementById('multi-file-header');
+
+            if (wf.fileCount && wf.fileCount > 1) {
+                selectorEl.classList.remove('hidden');
+                headerEl.textContent = `Multi-Workflow System (${wf.fileCount} Filer)`;
+                
+                // Parse descriptions
+                const descLines = wf.fileDescriptions ? wf.fileDescriptions.split('\n') : [];
+                
+                let html = `
+                    <label class="flex items-center gap-3 p-3 rounded-lg border bg-white dark:bg-slate-900 cursor-pointer hover:border-amber-400 transition-colors group radio-label radio-selected" onclick="selectFileOption('all', this)">
+                        <div class="relative flex items-center justify-center">
+                            <input type="radio" name="file-select" value="all" checked class="peer sr-only">
+                            <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
+                            <div class="absolute w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-sm font-bold text-slate-800 dark:text-white group-hover:text-amber-600 transition-colors">Alla ${wf.fileCount} workflows (Komplett system)</div>
+                            <div class="text-xs text-slate-500">Laddas ner som en ZIP-fil</div>
+                        </div>
+                        <i data-lucide="package" class="w-4 h-4 text-amber-500"></i>
+                    </label>
+                `;
+
+                for (let i = 1; i <= wf.fileCount; i++) {
+                    const desc = descLines[i-1] || `Del ${i}`;
+                    html += `
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 cursor-pointer hover:border-amber-400 transition-colors group radio-label" onclick="selectFileOption(${i}, this)">
+                            <div class="relative flex items-center justify-center">
+                                <input type="radio" name="file-select" value="${i}" class="peer sr-only">
+                                <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
+                                <div class="absolute w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-amber-600 transition-colors">${desc}</div>
+                        </label>
+                    `;
+                }
+                optionsEl.innerHTML = html;
+
+                if (wf.installationNotes) {
+                    notesEl.textContent = `💡 Installation: ${wf.installationNotes}`;
+                    notesEl.classList.remove('hidden');
+                } else {
+                    notesEl.classList.add('hidden');
+                }
+                lucide.createIcons();
+
+            } else {
+                selectorEl.classList.add('hidden');
+            }
+            // ---------------------------
 
             modalBackdrop.classList.remove('hidden');
             setTimeout(() => { modalBackdrop.classList.remove('opacity-0'); modalContent.classList.remove('scale-95', 'opacity-0'); modalContent.classList.add('scale-100', 'opacity-100'); }, 10);
             document.body.style.overflow = 'hidden';
+        }
+
+        function selectFileOption(val, labelEl) {
+            currentFileSelection = val;
+            // Update UI styling
+            document.querySelectorAll('.radio-label').forEach(el => {
+                el.classList.remove('radio-selected', 'border-amber-500', 'bg-white', 'dark:bg-slate-900');
+                el.classList.add('border-slate-200', 'dark:border-slate-700', 'bg-white/50', 'dark:bg-slate-900/50');
+            });
+            labelEl.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white/50', 'dark:bg-slate-900/50');
+            labelEl.classList.add('radio-selected', 'bg-white', 'dark:bg-slate-900');
+            
+            // Check radio input
+            const radio = labelEl.querySelector('input');
+            if(radio) radio.checked = true;
         }
 
         function closeModal() {
@@ -1223,77 +1373,119 @@
         }
 
         async function downloadJSON(workflow) {
-            // FIXED: Smart Fallback Download Logic (Patterns)
             const btn = document.getElementById('btn-download');
             const originalText = btn.innerHTML;
-            
-            // UI Loading State
-            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Letar...';
+            const githubId = workflow.fields?.ID || workflow.ID || workflow.id;
+            const baseUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}`;
+
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Förbereder...';
             btn.disabled = true;
-            
+
             try {
-                // ROBUST: Try all ID locations (nested fields, flat, legacy)
-                const githubId = workflow.fields?.ID || workflow.ID || workflow.id;
+                // SCENARIO 1: Bundle Download (ZIP)
+                if (currentFileSelection === 'all' && workflow.fileCount > 1) {
+                    btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Skapar ZIP...';
+                    
+                    const zip = new JSZip();
+                    const folder = zip.folder(workflow.title.replace(/[^a-z0-9]/gi, '_').toLowerCase());
+                    
+                    const fetchPromises = [];
+                    
+                    for (let i = 1; i <= workflow.fileCount; i++) {
+                        // Pattern strategies: ID_1.json, ID.json (if i=1 fallback), ID-1.json
+                        const patterns = [`${githubId}_${i}.json`, `${githubId}-${i}.json`];
+                        if (i === 1) patterns.push(`${githubId}.json`); // Fallback for first file
+                        
+                        const p = (async () => {
+                            let content = null;
+                            let filename = `${githubId}_${i}.json`; // Default save name
 
-                console.log('⬇️ Download Debug:', { 
-                    githubId: githubId,
-                    workflowTitle: workflow.title
-                });
-
-                const baseUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}`;
-
-                // Patterns att försöka i ordning (Prioriterar clean ID, sedan varianter)
-                const patterns = [
-                    `${githubId}.json`,
-                    `${githubId} - 1.json`,
-                    `${githubId}_1.json`,
-                    `${githubId}_2.json`,
-                    `${githubId} - 2.json`
-                ];
-
-                let foundUrl = null;
-                let foundPattern = '';
-
-                // Försök varje pattern tills en lyckas
-                for (const pattern of patterns) {
-                    const checkUrl = `${baseUrl}/${pattern}`;
-                    try {
-                        const response = await fetch(checkUrl, { method: 'HEAD' });
-                        if (response.ok) {
-                            foundUrl = checkUrl;
-                            foundPattern = pattern;
-                            console.log(`✅ Pattern matched: ${pattern}`);
-                            break; // Vi hittade filen! Avbryt loopen.
-                        }
-                    } catch (e) {
-                        console.log(`Pattern failed: ${pattern}`);
+                            // Try patterns
+                            for (const pattern of patterns) {
+                                try {
+                                    const res = await fetch(`${baseUrl}/${pattern}`);
+                                    if (res.ok) {
+                                        content = await res.text();
+                                        console.log(`✅ Found part ${i}: ${pattern}`);
+                                        break;
+                                    }
+                                } catch(e) {}
+                            }
+                            
+                            if (content) {
+                                folder.file(filename, content);
+                            } else {
+                                console.warn(`⚠️ Could not find file part ${i}`);
+                                folder.file(`MISSING_PART_${i}.txt`, "File not found in repository.");
+                            }
+                        })();
+                        fetchPromises.push(p);
                     }
+
+                    await Promise.all(fetchPromises);
+                    
+                    const content = await zip.generateAsync({type:"blob"});
+                    const url = window.URL.createObjectURL(content);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${workflow.title.replace(/[^a-z0-9]/gi, '_')}_COMPLETE.zip`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    showToast(`ZIP-fil (${workflow.fileCount} delar) nedladdad! 📦`);
+                } 
+                // SCENARIO 2: Single File Download (Standard or Selection)
+                else {
+                    let targetUrl = '';
+                    let saveName = `${githubId}.json`;
+
+                    // Simple Logic: check patterns
+                    const patterns = [];
+                    
+                    if (workflow.fileCount > 1 && currentFileSelection !== 'all') {
+                        // User selected specific part
+                        patterns.push(`${githubId}_${currentFileSelection}.json`);
+                        patterns.push(`${githubId}-${currentFileSelection}.json`);
+                        saveName = `${githubId}_part_${currentFileSelection}.json`;
+                    } else {
+                        // Standard single file workflow
+                        patterns.push(`${githubId}.json`);
+                        patterns.push(`${githubId}_1.json`); // Sometimes legacy
+                    }
+
+                    // Hunt for file
+                    let foundUrl = null;
+                    for (const pattern of patterns) {
+                        try {
+                            const checkUrl = `${baseUrl}/${pattern}`;
+                            const response = await fetch(checkUrl, { method: 'HEAD' });
+                            if (response.ok) {
+                                foundUrl = checkUrl;
+                                break;
+                            }
+                        } catch (e) {}
+                    }
+
+                    if (!foundUrl) throw new Error(`Fil saknas: ${patterns.join(', ')}`);
+
+                    const response = await fetch(foundUrl);
+                    const blob = await response.blob();
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = saveName;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(downloadUrl);
+                    document.body.removeChild(a);
+
+                    showToast("Nedladdning startad! 🚀");
                 }
 
-                if (!foundUrl) {
-                    throw new Error(`Filen saknas i GitHub (alla patterns testade för ID: ${githubId})`);
-                }
-
-                // Download Logic - Hämta den matchade filen
-                const response = await fetch(foundUrl);
-                if (!response.ok) throw new Error('Network response was not ok during download');
-                
-                const blob = await response.blob();
-                const downloadUrl = window.URL.createObjectURL(blob);
-
-                // Trigga download
-                const a = document.createElement('a');
-                a.href = downloadUrl;
-                // Spara med clean ID-namn som requested
-                a.download = `${githubId}.json`; 
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(downloadUrl);
-
-                showToast("Nedladdning startad! 🚀");
-
-                // Update Statistics Tracking
+                // Tracking
                 if (USE_BACKEND) {
                     fetch(API_ENDPOINTS.download(workflow.id), {
                         method: 'POST',
@@ -1302,9 +1494,8 @@
                             userId: userState.email || 'anonymous', 
                             tier: userState.tier, 
                             timestamp: new Date().toISOString(),
-                            fileCount: 1,
-                            githubId: githubId,
-                            matchedPattern: foundPattern
+                            fileCount: currentFileSelection === 'all' ? workflow.fileCount : 1,
+                            githubId: githubId
                         })
                     }).catch(err => console.warn('Tracking failed', err));
                 }
@@ -1315,8 +1506,7 @@
 
             } catch (error) {
                 console.error('Download error:', error);
-                const usedId = workflow.fields?.ID || workflow.ID || workflow.id;
-                showToast(`Kunde inte hitta filen (ID: ${usedId}). Kontakta support.`, true);
+                showToast(`Kunde inte ladda ner filen. Kontakta support.`, true);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
