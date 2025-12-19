@@ -241,6 +241,11 @@
         <!-- Grid -->
         <div id="workflow-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
+        <!-- Pagination Controls (NEW) -->
+        <div id="pagination-controls" class="mt-12 flex justify-center items-center gap-4 hidden">
+            <!-- Buttons injected by JS -->
+        </div>
+
         <!-- Empty State -->
         <div id="empty-state" class="hidden text-center py-20">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-900 mb-4">
@@ -785,7 +790,9 @@
         const PLATFORMS = [ { id: 'all', label: 'Alla' }, { id: 'n8n', label: 'n8n' } ];
         const DIFFICULTIES = [ { id: 'all', label: 'Alla' } ];
 
-        let state = { search: '', categoryFilter: 'all', platformFilter: 'all', difficultyFilter: 'all', sort: 'popular' };
+        // NEW: ITEMS_PER_PAGE and currentPage added to state
+        const ITEMS_PER_PAGE = 20;
+        let state = { search: '', categoryFilter: 'all', platformFilter: 'all', difficultyFilter: 'all', sort: 'popular', currentPage: 1 };
         let chatState = { isOpen: false, history: [] };
         let currentModalWorkflow = null;
         let currentFileSelection = 'all'; // 'all' or index (1, 2, 3...)
@@ -1490,10 +1497,25 @@
             else if (state.sort === 'downloads') filtered.sort((a, b) => b.downloads - a.downloads);
             else if (state.sort === 'alphabetical') filtered.sort((a, b) => a.title.localeCompare(b.title));
             
-            if (filtered.length === 0) { gridEl.classList.add('hidden'); emptyStateEl.classList.remove('hidden'); return; }
+            if (filtered.length === 0) { 
+                gridEl.classList.add('hidden'); 
+                emptyStateEl.classList.remove('hidden'); 
+                document.getElementById('pagination-controls').classList.add('hidden');
+                return; 
+            }
             gridEl.classList.remove('hidden'); emptyStateEl.classList.add('hidden');
 
-            gridEl.innerHTML = filtered.map(wf => {
+            // --- PAGINATION LOGIC ---
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            
+            // Safety check if page is out of bounds after filter change
+            if (state.currentPage > totalPages) state.currentPage = 1;
+
+            const startIndex = (state.currentPage - 1) * ITEMS_PER_PAGE;
+            const paginatedItems = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+            gridEl.innerHTML = paginatedItems.map(wf => {
                 let badge = '';
                 if (wf.category === 'swedish') {
                     badge = `<span class="bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm">🇸🇪 Svensk</span>`;
@@ -1555,7 +1577,42 @@
                     </div>
                 </div>
             `}).join('');
+            
+            renderPagination(totalPages);
             lucide.createIcons();
+        }
+
+        // --- PAGINATION FUNCTIONS ---
+        function renderPagination(totalPages) {
+            const paginationEl = document.getElementById('pagination-controls');
+            if (totalPages <= 1) {
+                paginationEl.classList.add('hidden');
+                return;
+            }
+            
+            paginationEl.classList.remove('hidden');
+            paginationEl.innerHTML = `
+                <button onclick="changePage(${state.currentPage - 1})" ${state.currentPage === 1 ? 'disabled' : ''} class="flex items-center gap-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Föregående
+                </button>
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Sida ${state.currentPage} av ${totalPages}</span>
+                <button onclick="changePage(${state.currentPage + 1})" ${state.currentPage === totalPages ? 'disabled' : ''} class="flex items-center gap-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium">
+                    Nästa <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+            `;
+            lucide.createIcons();
+        }
+
+        function changePage(newPage) {
+            state.currentPage = newPage;
+            renderWorkflows();
+            // Scroll to the top of the filters/grid
+            const scrollTarget = document.getElementById('category-filters');
+            if(scrollTarget) {
+                const yOffset = -100; // Offset for sticky header
+                const y = scrollTarget.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
         }
 
         function toggleFavorite(e, id) {
@@ -1571,12 +1628,13 @@
             renderWorkflows(); 
         }
 
-        function handleSearch(query) { state.search = query; renderWorkflows(); }
-        function setCategory(id) { state.categoryFilter = id; renderControls(); renderWorkflows(); }
-        function setPlatform(id) { state.platformFilter = id; renderControls(); renderWorkflows(); }
-        function setDifficulty(id) { state.difficultyFilter = id; renderControls(); renderWorkflows(); }
-        function setSort(val) { state.sort = val; renderWorkflows(); }
-        function resetApp() { state.search = ''; state.categoryFilter = 'all'; searchInputEl.value = ''; renderControls(); renderWorkflows(); }
+        // Updated filters to reset page to 1
+        function handleSearch(query) { state.search = query; state.currentPage = 1; renderWorkflows(); }
+        function setCategory(id) { state.categoryFilter = id; state.currentPage = 1; renderControls(); renderWorkflows(); }
+        function setPlatform(id) { state.platformFilter = id; state.currentPage = 1; renderControls(); renderWorkflows(); }
+        function setDifficulty(id) { state.difficultyFilter = id; state.currentPage = 1; renderControls(); renderWorkflows(); }
+        function setSort(val) { state.sort = val; state.currentPage = 1; renderWorkflows(); }
+        function resetApp() { state.search = ''; state.categoryFilter = 'all'; state.currentPage = 1; searchInputEl.value = ''; renderControls(); renderWorkflows(); }
 
         function renderControls() {
             filtersEl.innerHTML = CATEGORIES.map(cat => {
