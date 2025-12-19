@@ -1145,18 +1145,18 @@
             try {
                 let emailToUse = userState.email;
 
-                // DEV FEATURE: Om du är inloggad som dev, får du välja vilken e-post som ska skickas till Stripe
-                // Detta låter dig testa unika användare i Airtable utan att behöva logga in med dem
+                // DEV FEATURE: Hårdkodad fallback
                 if (userState.email.toLowerCase().includes('dev@') || userState.email.toLowerCase().includes('nordsym')) {
-                    const input = prompt("🧪 DEV MODE: Ange e-post för detta köp (för att testa unik rad i Airtable):", `test.${Date.now()}@nordsym.com`);
-                    if (input) emailToUse = input;
+                    emailToUse = `test.${Date.now()}@nordsym.com`;
+                    console.log("🧪 DEV MODE: Auto-genererad email:", emailToUse);
                 }
 
-                console.log("Starting checkout for:", emailToUse); 
+                console.log("💳 Starting checkout for:", emailToUse); 
                 
                 const formData = new URLSearchParams();
                 formData.append('email', emailToUse);
-                // formData.append('priceId', 'price_1SeYKURtJYK3aJTqt5hJWx0b'); 
+
+                console.log("Anropar Create Checkout:", API_ENDPOINTS.createCheckout);
 
                 const res = await fetch(API_ENDPOINTS.createCheckout, {
                     method: 'POST',
@@ -1165,12 +1165,36 @@
                 });
 
                 if (res.ok) {
-                    const data = await res.json();
-                    if (data.checkoutUrl) {
-                        console.log("Redirecting to:", data.checkoutUrl);
-                        window.location.href = data.checkoutUrl;
+                    const text = await res.text();
+                    console.log("🚀 Stripe Server Response:", text);
+                    
+                    let data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch (e) {
+                        throw new Error("Ogiltigt JSON-svar från n8n.");
+                    }
+
+                    // ROBUST URL FINDER: Hanterar Array, Objekt med 'checkoutUrl' eller 'url'
+                    let targetUrl = null;
+                    
+                    if (Array.isArray(data) && data.length > 0 && data[0].url) {
+                        targetUrl = data[0].url; // Om n8n returnerar rå Stripe-array
+                    } else if (data.checkoutUrl) {
+                        targetUrl = data.checkoutUrl; // Om n8n returnerar { checkoutUrl: ... }
+                    } else if (data.url) {
+                        targetUrl = data.url; // Om n8n returnerar platt objekt
+                    }
+
+                    if (targetUrl) {
+                        console.log("✅ Opening Payment Link:", targetUrl);
+                        showToast("Öppnar betalning i ny flik...", false);
+                        
+                        // VIKTIGT: Använd window.open för att undvika sandbox-krasch/utloggning
+                        window.open(targetUrl, '_blank');
                     } else {
-                        throw new Error("Ingen checkoutUrl i svaret från n8n");
+                        console.error("❌ Saknar URL i data:", data);
+                        throw new Error("Kunde inte hitta betallänk i svaret.");
                     }
                 } else {
                     const errText = await res.text();
@@ -1182,7 +1206,7 @@
                 if (err.message.includes('Failed to fetch')) {
                     showToast("CORS-fel. n8n måste svara med 'Access-Control-Allow-Origin: *'", true);
                 } else {
-                    showToast("Kunde inte starta betalning. Försök igen.", true);
+                    showToast("Kunde inte starta betalning: " + err.message, true);
                 }
             } finally {
                 btn.innerHTML = originalContent;
@@ -1195,10 +1219,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             
             if (urlParams.get('canceled') === 'true') {
+                console.log("🚫 Stripe Checkout Cancelled");
                 showToast("Uppgradering avbruten.", true);
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
             else if (urlParams.get('success') === 'true') {
+                console.log("✅ Stripe Checkout Success! Verifying...");
                 showToast("Betalning lyckades! Verifierar konto...", false);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
@@ -1213,6 +1239,7 @@
             if (!userState.email) return;
 
             try {
+                console.log("🔄 Checking User Tier via:", API_ENDPOINTS.getUser);
                 // Simple poll to check tier
                 const formData = new URLSearchParams();
                 formData.append('email', userState.email);
@@ -1225,6 +1252,8 @@
 
                 if (res.ok) {
                     const data = await res.json();
+                    console.log("👤 User Profile Data:", data);
+                    
                     if (data.tier === 'pro') {
                         userState.tier = 'pro';
                         saveUserState();
@@ -1239,10 +1268,11 @@
                             setTimeout(() => badge.classList.remove('animate-bounce'), 2000);
                         }
                     } else {
+                        console.warn("⚠️ Tier is still:", data.tier);
                         // Retry once more if webhook was slow
                         setTimeout(async () => {
+                           console.log("Retrying tier check...");
                            // Simple retry logic could go here or just tell user to refresh
-                           console.log("Tier not updated yet, user may need to refresh.");
                         }, 2000);
                     }
                 }
