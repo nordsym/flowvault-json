@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="sv" class="scroll-smooth">
+<html lang="sv" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowVault v2.2 - Sveriges ledande automationsbibliotek | NordSym</title>
-    <meta name="description" content="100+ verifierade automationer för Fortnox, Visma, n8n och AI. Gratis nedladdning. Byggt i Stockholm av NordSym AB.">
+    <title>FlowVault v2.2 - Bibliotek för n8n-arbetsflöden | NordSym</title>
+    <meta name="description" content="Verifierade arbetsflöden för Fortnox, Visma, n8n och AI. Gratis nedladdning. Byggt i Stockholm av NordSym AB.">
     <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg">
     
     <!-- Fonts -->
@@ -130,7 +130,7 @@
                         <h1 class="font-heading text-xl font-bold tracking-tight leading-none text-slate-900 dark:text-white">FlowVault</h1>
                         <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">BETA</span>
                     </div>
-                    <span class="text-[10px] text-slate-500 font-medium tracking-wide uppercase">Powered by NordSym</span>
+                    <span class="text-[10px] text-slate-500 font-medium tracking-wide uppercase">Drivs av NordSym</span>
                 </div>
             </div>
             
@@ -171,14 +171,14 @@
                 Automatisera snabbare. <br class="hidden sm:block" /> Sluta bygga om hjulet.
             </h2>
             <p class="text-slate-500 dark:text-slate-400 mb-8 text-lg">
-                Sveriges största samling av verifierade n8n & Make workflows.
+                En samling av verifierade n8n-arbetsflöden och automationer.
             </p>
 
             <div class="relative max-w-xl mx-auto group mb-4">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <i data-lucide="search" class="w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"></i>
                 </div>
-                <input type="text" id="search-input" placeholder="Sök automationer (t.ex. 'fortnox', 'linkedin ai')..." class="block w-full pl-11 pr-4 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm text-lg placeholder:text-slate-400" oninput="handleSearch(this.value)">
+                <input type="text" id="search-input" placeholder="Sök arbetsflöden (t.ex. 'fortnox', 'linkedin ai')..." class="block w-full pl-11 pr-4 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm text-lg placeholder:text-slate-400" oninput="handleSearch(this.value)">
             </div>
             
             <!-- Request Link (New - High Visibility) -->
@@ -237,7 +237,7 @@
             </div>
             <h3 class="text-lg font-medium mb-1">Inga träffar</h3>
             <p class="text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto">
-                Vi har både svenska integrationer och global AI-automation. Prova att justera dina filter eller kontakta oss.
+                Vi har både svenska integrationer och globala AI-flöden. Prova att justera dina filter eller kontakta oss.
             </p>
             <button onclick="resetApp()" class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm">Rensa filter</button>
         </div>
@@ -320,7 +320,7 @@
 
             <!-- Footer Bottom -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-slate-200 dark:border-slate-800 pt-12">
-                <div><h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Om FlowVault</h3><p class="text-sm text-slate-500 dark:text-slate-400">Gratis automation-bibliotek byggt av NordSym AB.</p></div>
+                <div><h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Om FlowVault</h3><p class="text-sm text-slate-500 dark:text-slate-400">Gratis bibliotek för arbetsflöden byggt av NordSym AB.</p></div>
                 <div><h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Kontakt</h3><a href="mailto:support@nordsym.com" class="text-primary hover:text-primary-hover text-sm font-medium">support@nordsym.com</a></div>
             </div>
             <div class="text-center pt-8 border-t border-slate-200 dark:border-slate-800 mt-8">
@@ -359,7 +359,7 @@
         </div>
     </div>
 
-    <!-- Auth Modal (New) -->
+    <!-- Auth Modal (Restored) -->
     <div id="auth-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeAuthModal()">
         <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
             <div class="p-6 relative">
@@ -369,7 +369,7 @@
                 <div id="auth-view-email" class="block">
                     <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary"><i data-lucide="log-in" class="w-6 h-6"></i></div>
                     <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Logga in på FlowVault</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Ange din e-postadress för att få en inloggningskod. Vi använder Airtable som databas.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Ange din e-postadress för att få en inloggningskod.</p>
                     <form onsubmit="handleEmailSubmit(event)" class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-500 mb-1">E-postadress</label>
@@ -416,6 +416,52 @@
                     <button onclick="handleLogout()" class="w-full py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Logga ut</button>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Modal (Fix: Added missing modal) -->
+    <div id="request-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeRequestModal()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
+            <div class="p-6 relative">
+                <button onclick="closeRequestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-4 text-amber-600 dark:text-amber-400"><i data-lucide="lightbulb" class="w-6 h-6"></i></div>
+                <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Önska en automation</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Beskriv vad du behöver. Vi prioriterar baserat på efterfrågan.</p>
+                <form onsubmit="handleRequestSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post</label>
+                        <input type="email" id="request-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Beskrivning</label>
+                        <textarea id="request-desc" required rows="4" placeholder="Jag behöver ett flöde som..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white resize-none"></textarea>
+                    </div>
+                    <button type="submit" id="req-submit-btn" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                        <span>Skicka önskemål</span> <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enterprise Modal (Fix: Added missing modal) -->
+    <div id="enterprise-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeEnterpriseModal()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
+            <div class="p-6 relative">
+                <button onclick="closeEnterpriseModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-4 text-purple-600 dark:text-purple-400"><i data-lucide="building-2" class="w-6 h-6"></i></div>
+                <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Enterprise Väntelista</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Få tillgång till prioriterad support och skräddarsydda lösningar. Skriv upp dig så kontaktar vi dig.</p>
+                <form onsubmit="handleEnterpriseSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post</label>
+                        <input type="email" id="enterprise-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
+                    </div>
+                    <button type="submit" id="ent-submit-btn" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-colors flex justify-center items-center gap-2">
+                        <span>Gå med i listan</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -552,7 +598,7 @@
             <div class="text-center mt-2 opacity-60">
                 <div class="flex items-center justify-center gap-1.5">
                     <i data-lucide="zap" class="w-3 h-3 text-primary"></i>
-                    <p class="text-[10px] text-slate-400">Powered by NordSym AB</p>
+                    <p class="text-[10px] text-slate-400">Drivs av NordSym AB</p>
                 </div>
                 <p class="text-[9px] text-slate-400 mt-0.5">AI-agenten kan göra misstag.</p>
             </div>
@@ -571,14 +617,18 @@
         const AI_CONFIG = { apiKey: 'PLACEHOLDER_API_KEY', model: 'claude-3-sonnet-20240229', endpoint: 'https://api.anthropic.com/v1/messages' };
         
         // --- API INTEGRATION ---
+        // VIKTIGT: Nu pekar vi på LIVE (Published) URL igen
         const API_BASE = 'https://nordsym.app.n8n.cloud/webhook';
+        
         const API_ENDPOINTS = {
             workflows: `${API_BASE}/flowvault-workflows`,
             download: (id) => `${API_BASE}/flowvault-download/${id}`,
             authInit: `${API_BASE}/flowvault-auth-init`,   // LIVE: Init login
-            authVerify: `${API_BASE}/auth/verify`, // MOCK: Verify code
-            request: `${API_BASE}/flowvault-request`, // MOCK: Request flow
-            chat: 'https://nordsym.app.n8n.cloud/webhook/5d2f97e8-0938-4fae-a660-5121f4b4fab7/chat' // LIVE: AI Chat
+            authVerify: `${API_BASE}/flowvault-verify-v2`, // LIVE: Verify code
+            request: 'https://nordsym.app.n8n.cloud/webhook/flowvault-request',
+            chat: 'https://nordsym.app.n8n.cloud/webhook/5d2f97e8-0938-4fae-a660-5121f4b4fab7/chat', // LIVE: AI Chat
+            createCheckout: 'https://nordsym.app.n8n.cloud/webhook/flowvault-create-checkout', // LIVE: Stripe Checkout (Explicit URL)
+            getUser: 'https://nordsym.app.n8n.cloud/webhook/flowvault-get-user' // LIVE: Refresh User Tier (Explicit URL)
         };
         const USE_BACKEND = true; // Enabled for production
 
@@ -598,8 +648,8 @@
 
         // --- DEV MODE OVERRIDE ---
         // Tvingar användaren till PRO-nivå för att låsa upp alla funktioner under utveckling.
-        userState.tier = 'pro';
-        console.log("🔧 DEV MODE: PRO tier forced active");
+        // userState.tier = 'pro';
+        // console.log("🔧 DEV MODE: PRO tier forced active");
         // -------------------------
 
         // Migration safeguard
@@ -737,6 +787,7 @@
             initTheme();
             initStarfall(); 
             updateAuthUI(); 
+            checkStripeRedirect(); // Check for payment return
             lucide.createIcons();
         }
 
@@ -811,14 +862,17 @@
             btn.disabled = true;
 
             try {
+                // FIX: Vi använder URLSearchParams (Form Data) istället för JSON.
+                // Detta gör anropet till ett "Simple Request" och hoppar över CORS-kontrollen (OPTIONS).
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                formData.append('description', "ENTERPRISE WAITLIST REQUEST");
+                formData.append('type', "enterprise_waitlist");
+
                 const response = await fetch(API_ENDPOINTS.request, {
                     method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        email: email,
-                        description: "ENTERPRISE WAITLIST REQUEST", 
-                        type: "enterprise_waitlist"
-                    })
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
                 });
 
                 if (response.ok) {
@@ -826,6 +880,8 @@
                     closeEnterpriseModal();
                     document.getElementById('enterprise-email').value = ''; 
                 } else {
+                    const errorText = await response.text();
+                    console.error("Server Error:", errorText);
                     showToast("Något gick fel. Försök igen.", true);
                 }
             } catch (error) {
@@ -848,13 +904,19 @@
             btn.disabled = true;
 
             try {
+                console.log("Sending request to:", API_ENDPOINTS.request); 
+
+                // FIX: Vi använder URLSearchParams (Form Data) istället för JSON.
+                // Detta gör anropet till ett "Simple Request" och hoppar över CORS-kontrollen (OPTIONS).
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                formData.append('description', desc);
+                formData.append('source', 'flowvault_web');
+
                 const response = await fetch(API_ENDPOINTS.request, {
                     method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        email: email,
-                        description: desc
-                    })
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
                 });
 
                 if (response.ok) {
@@ -862,11 +924,17 @@
                     document.getElementById('request-desc').value = '';
                     closeRequestModal();
                 } else {
-                    showToast("Något gick fel. Försök igen.", true);
+                    console.error("Server responded with:", response.status);
+                    showToast(`Serverfel (${response.status}). Försök igen.`, true);
                 }
             } catch (error) {
-                console.error("Request error:", error);
-                showToast("Kunde inte ansluta till servern.", true);
+                console.error("Request error details:", error);
+                
+                if (error.message.includes('Failed to fetch')) {
+                    showToast("Kunde inte nå servern (CORS).", true);
+                } else {
+                    showToast("Något gick fel. Försök igen.", true);
+                }
             } finally {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
@@ -903,26 +971,60 @@
             btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
             btn.disabled = true;
 
+            // --- DEV BACKDOOR ---
+            if (email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') {
+                setTimeout(() => {
+                    document.getElementById('auth-email-display').textContent = email;
+                    showToast("DEV MODE: Kod är 123456 🛠️");
+                    switchAuthView('code');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 800);
+                return;
+            }
+            // ---------------------
+
             try {
+                console.log("Anropar Auth Init:", API_ENDPOINTS.authInit);
+                
+                // FIX: Byt till URLSearchParams (Form Data) för att undvika CORS-blockering
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+
                 const response = await fetch(API_ENDPOINTS.authInit, { 
                     method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email }) 
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData 
                 });
 
                 if (response.ok) {
+                    const responseData = await response.clone().json().catch(() => ({}));
+                    console.log("🚀 Auth Init Server Response:", responseData);
+
+                    // NY LOGIK: Logga varning men STOPPA INTE. Låt användaren skriva in koden om den kom fram.
+                    if (responseData.success === false) {
+                        console.warn("⚠️ Servern rapporterade fel, men vi fortsätter ändå:", responseData);
+                    }
+
                     document.getElementById('auth-email-display').textContent = email;
                     showToast("Kod skickad till din e-post!");
                     switchAuthView('code');
                 } else {
-                    showToast("Kunde inte skicka kod. Försök igen.", true);
+                    console.error("Auth Init Error:", response.status, await response.text());
+                    showToast("Kunde inte skicka kod. Serverfel.", true);
                 }
             } catch (error) {
-                console.error("Auth init error:", error);
-                showToast("Nätverksfel. Kontrollera din anslutning.", true);
+                console.error("Auth init error details:", error);
+                if (error.message.includes('Failed to fetch')) {
+                    showToast("Kunde inte nå servern (CORS). Kolla Executions i n8n.", true);
+                } else {
+                    showToast("Nätverksfel. Kontrollera din anslutning.", true);
+                }
             } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+                if (email.toLowerCase() !== 'dev@nordsym.com' && email.toLowerCase() !== 'pro@nordsym.com') {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
             }
         }
 
@@ -936,11 +1038,43 @@
             btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
             btn.disabled = true;
             
+            // --- DEV BACKDOOR ---
+            if ((email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') && code === '123456') {
+                setTimeout(() => {
+                    userState.isAuthenticated = true;
+                    userState.email = email;
+                    // Välj nivå baserat på vilken dev-mail som användes
+                    userState.tier = email.toLowerCase() === 'pro@nordsym.com' ? 'pro' : 'free';
+                    
+                    saveUserState();
+                    showToast(`Inloggad som DEV (${userState.tier.toUpperCase()}) 🛠️`);
+                    closeAuthModal();
+                    updateAuthUI();
+                    renderHeader();
+                    // Återställ knapp
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 800);
+                return;
+            }
+            // ---------------------
+
             try {
+                // DEBUG: Visa exakt vad vi skickar och vart
+                console.log(`🚀 Sending Verify Request to: ${API_ENDPOINTS.authVerify}`);
+                console.log(`📦 Payload: email=${email}, code=${code}`);
+
+                console.log("Anropar Auth Verify V2:", API_ENDPOINTS.authVerify);
+
+                // FIX: Byt till URLSearchParams (Form Data) för att undvika CORS-blockering
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                formData.append('code', code);
+
                 const res = await fetch(API_ENDPOINTS.authVerify, { 
                     method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, code }) 
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData 
                 });
                 
                 const data = await res.json();
@@ -959,11 +1093,18 @@
                     showToast("Felaktig kod", true);
                 }
             } catch (err) {
-                console.error("Auth verify error:", err);
-                showToast("Kunde inte verifiera kod.", true);
+                console.error("Auth verify error details:", err);
+                // Bättre felmeddelande för att guida dig rätt
+                if (err.message.includes('Failed to fetch')) {
+                    showToast("Serverfel (CORS). Kolla att n8n-flödet är AKTIVT!", true);
+                } else {
+                    showToast("Kunde inte verifiera kod.", true);
+                }
             } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+                if (!((email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') && code === '123456')) {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
             }
         }
 
@@ -996,31 +1137,117 @@
                 return;
             }
 
-            // Fixed Selector: Changed from .bg-amber-500 to .bg-fuchsia-500
             const btn = e ? e.currentTarget : document.querySelector('#paywall-modal button.bg-fuchsia-500');
             const originalContent = btn.innerHTML;
             btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Väntar på Stripe...';
             btn.disabled = true;
 
             try {
+                let emailToUse = userState.email;
+
+                // DEV FEATURE: Om du är inloggad som dev, får du välja vilken e-post som ska skickas till Stripe
+                // Detta låter dig testa unika användare i Airtable utan att behöva logga in med dem
+                if (userState.email.toLowerCase().includes('dev@') || userState.email.toLowerCase().includes('nordsym')) {
+                    const input = prompt("🧪 DEV MODE: Ange e-post för detta köp (för att testa unik rad i Airtable):", `test.${Date.now()}@nordsym.com`);
+                    if (input) emailToUse = input;
+                }
+
+                console.log("Starting checkout for:", emailToUse); 
+                
+                const formData = new URLSearchParams();
+                formData.append('email', emailToUse);
+                // formData.append('priceId', 'price_1SeYKURtJYK3aJTqt5hJWx0b'); 
+
                 const res = await fetch(API_ENDPOINTS.createCheckout, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userState.email })
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
                 });
 
-                const data = await res.json();
-                if (data.url) {
-                    window.location.href = data.url;
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.checkoutUrl) {
+                        console.log("Redirecting to:", data.checkoutUrl);
+                        window.location.href = data.checkoutUrl;
+                    } else {
+                        throw new Error("Ingen checkoutUrl i svaret från n8n");
+                    }
                 } else {
-                    showToast("Kunde inte starta betalning", true);
+                    const errText = await res.text();
+                    console.error("Server responded with:", res.status, errText);
+                    throw new Error(`Serverfel: ${res.status}`);
                 }
             } catch (err) {
-                console.error("Stripe error:", err);
-                showToast("Betalningsfel", true);
+                console.error("Stripe error details:", err);
+                if (err.message.includes('Failed to fetch')) {
+                    showToast("CORS-fel. n8n måste svara med 'Access-Control-Allow-Origin: *'", true);
+                } else {
+                    showToast("Kunde inte starta betalning. Försök igen.", true);
+                }
             } finally {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
+            }
+        }
+
+        // --- STRIPE REDIRECT LOGIC ---
+        async function checkStripeRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('canceled') === 'true') {
+                showToast("Uppgradering avbruten.", true);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            else if (urlParams.get('success') === 'true') {
+                showToast("Betalning lyckades! Verifierar konto...", false);
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // Wait 3 seconds for webhook to process in n8n/Airtable
+                setTimeout(async () => {
+                    await refreshUserProfile();
+                }, 3000);
+            }
+        }
+
+        async function refreshUserProfile() {
+            if (!userState.email) return;
+
+            try {
+                // Simple poll to check tier
+                const formData = new URLSearchParams();
+                formData.append('email', userState.email);
+
+                const res = await fetch(API_ENDPOINTS.getUser, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.tier === 'pro') {
+                        userState.tier = 'pro';
+                        saveUserState();
+                        renderHeader();
+                        renderWorkflows(); // Update locks
+                        showToast("Välkommen till PRO! 🚀");
+                        
+                        // Fire confetti effect if library exists, or simple animation
+                        const badge = document.getElementById('download-counter');
+                        if(badge) {
+                            badge.classList.add('animate-bounce');
+                            setTimeout(() => badge.classList.remove('animate-bounce'), 2000);
+                        }
+                    } else {
+                        // Retry once more if webhook was slow
+                        setTimeout(async () => {
+                           // Simple retry logic could go here or just tell user to refresh
+                           console.log("Tier not updated yet, user may need to refresh.");
+                        }, 2000);
+                    }
+                }
+            } catch (error) {
+                console.error("Could not refresh user profile:", error);
             }
         }
 
@@ -1058,15 +1285,29 @@
         async function fetchWorkflows() {
             if (!USE_BACKEND) return;
             try {
+                console.log("🔍 Försöker hämta workflows från:", API_ENDPOINTS.workflows);
                 const response = await fetch(API_ENDPOINTS.workflows);
+                
                 if (response.ok) {
                     const data = await response.json();
-                    WORKFLOWS = Array.isArray(data) ? data : (data.workflows || STATIC_WORKFLOWS);
-                    renderWorkflows(); 
-                    renderStats();     
+                    // Validera att vi faktiskt fick en lista
+                    const items = Array.isArray(data) ? data : (data.workflows || []);
+                    
+                    if (items.length > 0) {
+                        console.log(`✅ Lyckades hämta ${items.length} workflows från n8n!`);
+                        WORKFLOWS = items;
+                        renderWorkflows(); 
+                        renderStats();
+                    } else {
+                        console.warn("⚠️ Backend svarade OK men listan var tom. Använder fallback.");
+                    }
+                } else {
+                    console.error(`❌ Backend Error: ${response.status} ${response.statusText}`);
+                    // Visa toast om backend är nere så du vet direkt
+                    showToast(`Kunde inte hämta flöden: ${response.status}`, true);
                 }
             } catch (error) {
-                console.warn('Backend unavailable, using static data:', error);
+                console.error('❌ Nätverksfel / CORS vid hämtning av workflows:', error);
             }
         }
 
@@ -1104,7 +1345,7 @@
             });
 
             if (counterEl) {
-                counterEl.innerHTML = `Visar <span class="font-bold text-slate-900 dark:text-white">${filtered.length}</span> av <span class="font-medium">${WORKFLOWS.length}</span> automationer`;
+                counterEl.innerHTML = `Visar <span class="font-bold text-slate-900 dark:text-white">${filtered.length}</span> av <span class="font-medium">${WORKFLOWS.length}</span> arbetsflöden`;
             }
 
             if (state.sort === 'popular') filtered.sort((a, b) => b.downloads - a.downloads);
@@ -1315,6 +1556,16 @@
         }
 
         function tryDownload(workflow) {
+            // LOGIK-ÄNDRING: Tvinga inloggning för ALLA nedladdningar
+            if (!userState.isAuthenticated) {
+                closeModal();
+                setTimeout(() => {
+                    showToast("Du måste logga in för att ladda ner.", true);
+                    openAuthModal();
+                }, 300);
+                return;
+            }
+
             if (userState.tier === 'free') {
                 if (userState.downloads.length >= FREE_LIMIT) {
                     closeModal(); setTimeout(() => openPaywall('limit_reached'), 300); return;
@@ -1485,8 +1736,17 @@
         }
 
         function initTheme() {
-            if (localStorage.theme === 'dark') document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark');
-            document.getElementById('theme-toggle').addEventListener('click', () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; });
+            // Default till dark om inget val är gjort (eller om valet är 'dark')
+            if (localStorage.theme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            
+            document.getElementById('theme-toggle').addEventListener('click', () => { 
+                document.documentElement.classList.toggle('dark'); 
+                localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; 
+            });
         }
 
         // --- STARFALL SYSTEM (Canvas) ---
