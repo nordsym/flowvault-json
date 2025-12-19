@@ -1224,23 +1224,32 @@
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
             else if (urlParams.get('success') === 'true') {
-                console.log("✅ Stripe Checkout Success! Verifying...");
-                showToast("Betalning lyckades! Verifierar konto...", false);
+                console.log("✅ Stripe Checkout Success! Starting polling...");
+                showToast("Betalning mottagen! Verifierar status...", false);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
-                // Wait 3 seconds for webhook to process in n8n/Airtable
-                setTimeout(async () => {
-                    await refreshUserProfile();
-                }, 3000);
+                // Starta polling: Försök 10 gånger med 3 sekunders mellanrum (30s totalt)
+                // Detta ger Stripe webhooken tid att uppdatera Airtable
+                pollForProStatus(10);
             }
         }
 
-        async function refreshUserProfile() {
+        async function pollForProStatus(retriesLeft) {
             if (!userState.email) return;
 
+            // Avbryt om vi redan blivit PRO (t.ex. av en annan flik eller tidigare poll)
+            if (userState.tier === 'pro') {
+                return; 
+            }
+
+            if (retriesLeft <= 0) {
+                console.warn("⚠️ Polling timed out. User is still free.");
+                showToast("Kunde inte se uppdateringen än. Ladda om sidan om en stund.", true);
+                return;
+            }
+
             try {
-                console.log("🔄 Checking User Tier via:", API_ENDPOINTS.getUser);
-                // Simple poll to check tier
+                console.log(`🔄 Polling PRO status via getUser... (${retriesLeft} försök kvar)`);
                 const formData = new URLSearchParams();
                 formData.append('email', userState.email);
 
@@ -1255,30 +1264,28 @@
                     console.log("👤 User Profile Data:", data);
                     
                     if (data.tier === 'pro') {
+                        // SUCCESS! Vi hittade PRO-statusen
+                        console.log("🎉 PRO status confirmed!");
                         userState.tier = 'pro';
                         saveUserState();
                         renderHeader();
-                        renderWorkflows(); // Update locks
+                        renderWorkflows(); 
                         showToast("Välkommen till PRO! 🚀");
                         
-                        // Fire confetti effect if library exists, or simple animation
-                        const badge = document.getElementById('download-counter');
-                        if(badge) {
-                            badge.classList.add('animate-bounce');
-                            setTimeout(() => badge.classList.remove('animate-bounce'), 2000);
+                        // Visuell feedback på uppgraderingen
+                        const dlCounter = document.getElementById('download-counter');
+                        if(dlCounter) {
+                            dlCounter.innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700 animate-bounce">PRO AKTIVERAT</span>';
                         }
-                    } else {
-                        console.warn("⚠️ Tier is still:", data.tier);
-                        // Retry once more if webhook was slow
-                        setTimeout(async () => {
-                           console.log("Retrying tier check...");
-                           // Simple retry logic could go here or just tell user to refresh
-                        }, 2000);
+                        return; // Sluta polla
                     }
                 }
             } catch (error) {
-                console.error("Could not refresh user profile:", error);
+                console.error("Polling error:", error);
             }
+
+            // Om vi inte är PRO än, vänta 3 sekunder och försök igen
+            setTimeout(() => pollForProStatus(retriesLeft - 1), 3000);
         }
 
         // --- PAYWALL & MODALS ---
