@@ -781,7 +781,8 @@
         ];
 
         let WORKFLOWS = [...STATIC_WORKFLOWS]; 
-        const PLATFORMS = [ { id: 'all', label: 'Alla' }, { id: 'n8n', label: 'n8n' }, { id: 'make', label: 'Make' }, { id: 'zapier', label: 'Zapier' } ];
+        // UPDATED: Removed Make and Zapier "for now"
+        const PLATFORMS = [ { id: 'all', label: 'Alla' }, { id: 'n8n', label: 'n8n' } ];
         const DIFFICULTIES = [ { id: 'all', label: 'Alla' } ];
 
         let state = { search: '', categoryFilter: 'all', platformFilter: 'all', difficultyFilter: 'all', sort: 'popular' };
