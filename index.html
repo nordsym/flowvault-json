@@ -1440,6 +1440,18 @@
                     
                     if (items.length > 0) {
                         console.log(`✅ Lyckades hämta ${items.length} workflows från n8n!`);
+                        
+                        // DEBUG: Logga datan för det specifika flödet så vi ser vad category innehåller
+                        const debugItem = items.find(i => i.title && i.title.toLowerCase().includes('fortnox'));
+                        if (debugItem) {
+                            console.log("🐛 DEBUG DATA för Fortnox-flödet:", {
+                                title: debugItem.title,
+                                categoryRaw: debugItem.category,
+                                categoryType: typeof debugItem.category,
+                                isArray: Array.isArray(debugItem.category)
+                            });
+                        }
+
                         WORKFLOWS = items;
                         renderWorkflows(); 
                         renderStats();
@@ -1457,30 +1469,47 @@
         }
 
         function renderWorkflows() {
+            // Helper: Super-städare som delar upp ALLT vid kommatecken (fixar Airtable-listor)
+            const normalizeTags = (input) => {
+                let list = [];
+                if (Array.isArray(input)) list = input;
+                else if (typeof input === 'string') list = input.split(',');
+                else if (input) list = [String(input)];
+                
+                // Plattar till och trimmar: ["Tag1, Tag2"] blir ["tag1", "tag2"]
+                return list
+                    .flatMap(item => String(item).split(','))
+                    .map(item => item.trim().toLowerCase())
+                    .filter(item => item.length > 0);
+            };
+
             let filtered = WORKFLOWS.filter(wf => {
                 const matchesSearch = wf.title.toLowerCase().includes(state.search.toLowerCase()) || wf.description.toLowerCase().includes(state.search.toLowerCase());
                 
                 let matchesCategory = true;
+                
                 if (state.categoryFilter === 'favorites') {
                     matchesCategory = userState.favorites.includes(wf.id);
                 } else if (state.categoryFilter !== 'all') {
                     const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
+                    
+                    // ANVÄND SUPER-STÄDAREN HÄR
+                    const wfCats = normalizeTags(rawCat);
+                    
+                    // Hämta hela kategori-objektet för att komma åt aliases
+                    const targetCategoryObj = CATEGORIES.find(c => c.id === state.categoryFilter);
                     const targetId = state.categoryFilter.toLowerCase();
-                    const targetLabel = CATEGORIES.find(c => c.id === state.categoryFilter)?.label.toLowerCase() || '';
+                    const targetLabel = targetCategoryObj?.label.toLowerCase() || '';
+                    const targetAliases = targetCategoryObj?.aliases || []; 
 
-                    let wfCats = [];
-                    if (Array.isArray(rawCat)) {
-                        wfCats = rawCat.map(c => String(c).toLowerCase());
-                    } else if (typeof rawCat === 'string') {
-                        wfCats = [rawCat.toLowerCase()];
-                    }
-
+                    // Robust matchning
                     matchesCategory = wfCats.some(cat => 
                         cat === targetId || 
                         cat === targetLabel ||
                         cat.includes(targetId) || 
                         cat.includes(targetLabel) ||
-                        (targetLabel && targetLabel.includes(cat))
+                        (targetLabel && targetLabel.includes(cat)) ||
+                        targetAliases.some(alias => cat.includes(alias)) 
                     );
                 }
 
@@ -1517,32 +1546,40 @@
             const paginatedItems = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
             gridEl.innerHTML = paginatedItems.map(wf => {
+                // ANVÄND SUPER-STÄDAREN ÄVEN FÖR VISNINGEN
+                const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
+                const wfCatsBadge = normalizeTags(rawCat);
+
                 let badge = '';
-                if (wf.category === 'swedish') {
-                    badge = `<span class="bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border border-sky-100 dark:border-sky-800 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm">🇸🇪 Svensk</span>`;
-                } else if (wf.proBadge) {
+                // UPDATED: Tog bort den specifika "Svensk"-badgen för att undvika dubbla flaggor.
+                // Nu förlitar vi oss på att kategorin "Svensk" genererar en flagg-ikon i loopen nedan istället.
+                if (wf.proBadge) {
                     badge = `<span class="badge-pro px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"><i data-lucide="crown" class="w-3 h-3"></i> PRO</span>`;
                 }
 
-                const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
-                const searchStr = (Array.isArray(rawCat) ? rawCat[0] : rawCat)?.toString().toLowerCase() || '';
+                // NY LOGIK: Generera ikoner för ALLA identifierade kategorier
+                let catIconsHtml = '';
+                const uniqueMatchedCats = new Set(); 
 
-                const foundCat = CATEGORIES.find(c => {
-                    if (c.id === 'all') return false;
-                    const directMatch = c.id === searchStr || c.label.toLowerCase() === searchStr;
-                    const aliasMatch = c.aliases && c.aliases.some(alias => searchStr.includes(alias));
-                    return directMatch || aliasMatch;
-                });
+                wfCatsBadge.forEach(catStr => {
+                    const foundCat = CATEGORIES.find(c => {
+                        if (c.id === 'all') return false;
+                        const directMatch = c.id === catStr || c.label.toLowerCase() === catStr;
+                        const aliasMatch = c.aliases && c.aliases.some(alias => catStr.includes(alias));
+                        return directMatch || aliasMatch;
+                    });
 
-                let catIcon = '';
-                if (foundCat) {
-                    const isEmoji = foundCat.icon.match(/\p{Emoji}/u);
-                    if (isEmoji) {
-                         catIcon = `<span class="text-sm opacity-80" title="${foundCat.label}">${foundCat.icon}</span>`;
-                    } else {
-                         catIcon = `<i data-lucide="${foundCat.icon}" class="w-4 h-4 text-slate-400" title="${foundCat.label}"></i>`;
+                    if (foundCat && !uniqueMatchedCats.has(foundCat.id)) {
+                        uniqueMatchedCats.add(foundCat.id); 
+                        
+                        const isEmoji = foundCat.icon.match(/\p{Emoji}/u);
+                        if (isEmoji) {
+                             catIconsHtml += `<span class="text-sm opacity-80 cursor-help" title="${foundCat.label}">${foundCat.icon}</span>`;
+                        } else {
+                             catIconsHtml += `<i data-lucide="${foundCat.icon}" class="w-4 h-4 text-slate-400" title="${foundCat.label}"></i>`;
+                        }
                     }
-                }
+                });
 
                 const isLocked = wf.proBadge && userState.tier === 'free';
                 const actionIcon = isLocked ? 'lock' : 'arrow-right';
@@ -1554,7 +1591,9 @@
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider platform-${wf.platform}">${wf.platform}</span>
-                            ${catIcon} 
+                            <div class="flex items-center gap-1.5 ml-1">
+                                ${catIconsHtml}
+                            </div>
                             ${badge}
                         </div>
                         <div class="flex items-center gap-2">
