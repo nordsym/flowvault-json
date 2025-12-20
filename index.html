@@ -796,6 +796,7 @@
         let chatState = { isOpen: false, history: [] };
         let currentModalWorkflow = null;
         let currentFileSelection = 'all'; // 'all' or index (1, 2, 3...)
+        let modalTimer; // Fix för race conditions vid snabba klick
 
         // --- DOM Elements ---
         const gridEl = document.getElementById('workflow-grid');
@@ -1653,6 +1654,10 @@
         function openModal(id) {
             const wf = WORKFLOWS.find(w => w.id === id);
             if (!wf) return;
+            
+            // Stoppa eventuella pågående stängnings-timers så vi inte gömmer modalen mitt i öppningen
+            if (modalTimer) clearTimeout(modalTimer);
+
             currentModalWorkflow = wf;
             currentFileSelection = 'all';
 
@@ -1721,8 +1726,20 @@
                 selectorEl.classList.add('hidden');
             }
 
+            // 1. Visa bakgrunden först (men osynlig/transparent)
             modalBackdrop.classList.remove('hidden');
-            setTimeout(() => { modalBackdrop.classList.remove('opacity-0'); modalContent.classList.remove('scale-95', 'opacity-0'); modalContent.classList.add('scale-100', 'opacity-100'); }, 10);
+            
+            // 2. Tvinga webbläsaren att fatta att den är synlig (reflow) innan vi startar animationen
+            // Detta löser problemet med "suddig bakgrund men inget kort"
+            void modalBackdrop.offsetWidth; 
+
+            // 3. Starta animationen inåt
+            modalTimer = setTimeout(() => { 
+                modalBackdrop.classList.remove('opacity-0'); 
+                modalContent.classList.remove('scale-95', 'opacity-0'); 
+                modalContent.classList.add('scale-100', 'opacity-100'); 
+            }, 10);
+            
             document.body.style.overflow = 'hidden';
         }
 
@@ -1740,8 +1757,19 @@
         }
 
         function closeModal() {
-            modalBackdrop.classList.add('opacity-0'); modalContent.classList.remove('scale-100', 'opacity-100'); modalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => { modalBackdrop.classList.add('hidden'); document.body.style.overflow = ''; currentModalWorkflow = null; }, 200);
+            if (modalTimer) clearTimeout(modalTimer);
+
+            // Starta animation utåt
+            modalBackdrop.classList.add('opacity-0'); 
+            modalContent.classList.remove('scale-100', 'opacity-100'); 
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            // Vänta på animationen innan vi gömmer elementet helt
+            modalTimer = setTimeout(() => { 
+                modalBackdrop.classList.add('hidden'); 
+                document.body.style.overflow = ''; 
+                currentModalWorkflow = null; 
+            }, 200);
         }
 
         function handleWorkflowClick(id) {
