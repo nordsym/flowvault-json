@@ -1160,6 +1160,7 @@
                     closeAuthModal();
                     updateAuthUI();
                     renderHeader();
+                    renderWorkflows(); // FIX: Uppdatera grid så hänglås försvinner direkt
                     // Återställ knapp
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -1191,13 +1192,20 @@
                 if (data.success) { 
                     userState.isAuthenticated = true;
                     userState.email = email;
+                    // Säkra upp tier-hanteringen
                     userState.tier = (data.tier || 'free').toLowerCase();
+                    
                     if (data.downloads_remaining !== undefined) userState.downloadsRemaining = data.downloads_remaining;
                     saveUserState();
-                    showToast("Inloggning lyckades!");
+                    
+                    // FIX: Visa vilken nivå användaren fick
+                    const tierMsg = userState.tier === 'pro' ? 'PRO 🚀' : 'Free';
+                    showToast(`Inloggad som ${tierMsg}!`);
+                    
                     closeAuthModal();
                     updateAuthUI();
                     renderHeader();
+                    renderWorkflows(); // FIX: Viktigast! Rita om alla kort så PRO-flöden låses upp
                 } else {
                     showToast("Felaktig kod", true);
                 }
@@ -1227,6 +1235,7 @@
             closeAuthModal();
             updateAuthUI();
             renderHeader();
+            renderWorkflows(); // FIX: Rita om gridet så saker låses igen
         }
 
         function saveUserState() {
