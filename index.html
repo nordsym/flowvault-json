@@ -834,14 +834,55 @@
             renderControls();
             renderHeader(); 
             renderStats();
-            renderWorkflows(); // Ritar statisk data direkt (LCP)
-            fetchWorkflows();  // Hämtar färsk data i bakgrunden (Optimization)
+            renderWorkflows(); 
+            fetchWorkflows();  
             initTheme();
             initStarfall(); 
             updateAuthUI(); 
-            checkStripeRedirect(); // Check for payment return
-            initCookies(); // NEW: Check cookies
+            checkStripeRedirect(); 
+            initCookies(); 
             lucide.createIcons();
+
+            // NYTT: Synka användardata (tier & downloads) direkt vid start om inloggad
+            if (userState.isAuthenticated && userState.email) {
+                syncUserProfile();
+            }
+        }
+
+        // --- NEW SYNC FUNCTION ---
+        async function syncUserProfile() {
+            console.log("🔄 Synkar användarprofil...");
+            try {
+                const formData = new URLSearchParams();
+                formData.append('email', userState.email);
+
+                const res = await fetch(API_ENDPOINTS.getUser, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    
+                    // Uppdatera Tier
+                    if (data.tier) userState.tier = data.tier.toLowerCase();
+                    
+                    // Uppdatera Nedladdningar (Hård synk)
+                    if (data.downloads_count !== undefined) {
+                        const count = parseInt(data.downloads_count);
+                        console.log(`✅ Profil synkad: ${data.tier}, ${count} nedladdningar.`);
+                        // Skapa dummy-historik för att matcha serverns siffra
+                        userState.downloads = Array(count).fill({ id: 'synced', timestamp: new Date().toISOString() });
+                    }
+
+                    saveUserState();
+                    renderHeader(); // Uppdatera mätaren visuellt
+                    renderWorkflows(); // Lås upp/ner PRO-kort
+                }
+            } catch (error) {
+                console.warn("Kunde inte synka profil:", error);
+            }
         }
 
         // --- COOKIE LOGIC ---
