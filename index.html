@@ -1955,18 +1955,27 @@
                     showToast("Nedladdning startad! 🚀");
                 }
 
-                if (USE_BACKEND) {
+                // --- TRACKING FIX (Updated to use FormData for better CORS handling) ---
+                if (USE_BACKEND && userState.isAuthenticated) {
+                    console.log(`📡 Skickar tracking-signal för ${githubId}...`);
+                    
+                    const trackingData = new URLSearchParams();
+                    trackingData.append('userId', userState.email || 'anonymous');
+                    trackingData.append('tier', userState.tier);
+                    trackingData.append('timestamp', new Date().toISOString());
+                    trackingData.append('fileCount', currentFileSelection === 'all' ? workflow.fileCount : 1);
+                    trackingData.append('githubId', githubId);
+
                     fetch(API_ENDPOINTS.download(workflow.id), {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            userId: userState.email || 'anonymous', 
-                            tier: userState.tier, 
-                            timestamp: new Date().toISOString(),
-                            fileCount: currentFileSelection === 'all' ? workflow.fileCount : 1,
-                            githubId: githubId
-                        })
-                    }).catch(err => console.warn('Tracking failed', err));
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: trackingData
+                    })
+                    .then(res => {
+                        if(res.ok) console.log("✅ Tracking lyckades! Airtable uppdaterad.");
+                        else console.error("❌ Tracking-server svarade fel:", res.status);
+                    })
+                    .catch(err => console.warn('❌ Tracking nätverksfel:', err));
                 }
 
                 userState.downloads.push({ id: workflow.id, timestamp: new Date().toISOString() });
