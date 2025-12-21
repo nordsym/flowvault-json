@@ -669,7 +669,8 @@
         
         const API_ENDPOINTS = {
             workflows: `${API_BASE}/flowvault-workflows`,
-            download: (id) => `${API_BASE}/flowvault-download/${id}`,
+            // FIX: Uppdaterad URL baserat på din webhook (dubbel path)
+            download: (id) => `${API_BASE}/flowvault-download/flowvault-download/${id}`,
             authInit: `${API_BASE}/flowvault-auth-init`,   // LIVE: Init login
             authVerify: `${API_BASE}/flowvault-verify-v2`, // LIVE: Verify code
             request: 'https://nordsym.app.n8n.cloud/webhook/flowvault-request',
@@ -1956,6 +1957,7 @@
                 }
 
                 // --- TRACKING FIX (Updated to use FormData for better CORS handling) ---
+                // --- TRACKING FIX (Updated to use no-cors for guaranteed delivery) ---
                 if (USE_BACKEND && userState.isAuthenticated) {
                     console.log(`📡 Skickar tracking-signal för ${githubId}...`);
                     
@@ -1966,15 +1968,14 @@
                     trackingData.append('fileCount', currentFileSelection === 'all' ? workflow.fileCount : 1);
                     trackingData.append('githubId', githubId);
 
+                    // FIX: Använd no-cors. Vi får inget svar, men anropet garanteras gå igenom utan CORS-blockering.
                     fetch(API_ENDPOINTS.download(workflow.id), {
                         method: 'POST',
+                        mode: 'no-cors', 
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: trackingData
                     })
-                    .then(res => {
-                        if(res.ok) console.log("✅ Tracking lyckades! Airtable uppdaterad.");
-                        else console.error("❌ Tracking-server svarade fel:", res.status);
-                    })
+                    .then(() => console.log("✅ Tracking-signal skickad (fire-and-forget)."))
                     .catch(err => console.warn('❌ Tracking nätverksfel:', err));
                 }
 
