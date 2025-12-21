@@ -1152,7 +1152,6 @@
                 setTimeout(() => {
                     userState.isAuthenticated = true;
                     userState.email = email;
-                    // Välj nivå baserat på vilken dev-mail som användes
                     userState.tier = email.toLowerCase() === 'pro@nordsym.com' ? 'pro' : 'free';
                     
                     saveUserState();
@@ -1160,8 +1159,7 @@
                     closeAuthModal();
                     updateAuthUI();
                     renderHeader();
-                    renderWorkflows(); // FIX: Uppdatera grid så hänglås försvinner direkt
-                    // Återställ knapp
+                    renderWorkflows(); 
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                 }, 800);
@@ -1170,13 +1168,8 @@
             // ---------------------
 
             try {
-                // DEBUG: Visa exakt vad vi skickar och vart
                 console.log(`🚀 Sending Verify Request to: ${API_ENDPOINTS.authVerify}`);
-                console.log(`📦 Payload: email=${email}, code=${code}`);
-
-                console.log("Anropar Auth Verify V2:", API_ENDPOINTS.authVerify);
-
-                // FIX: Byt till URLSearchParams (Form Data) för att undvika CORS-blockering
+                
                 const formData = new URLSearchParams();
                 formData.append('email', email);
                 formData.append('code', code);
@@ -1192,26 +1185,32 @@
                 if (data.success) { 
                     userState.isAuthenticated = true;
                     userState.email = email;
-                    // Säkra upp tier-hanteringen
                     userState.tier = (data.tier || 'free').toLowerCase();
                     
-                    if (data.downloads_remaining !== undefined) userState.downloadsRemaining = data.downloads_remaining;
+                    // --- HARD TRACKING FIX ---
+                    // Om servern skickar antalet nedladdningar, använd det!
+                    // Vi skapar "dummy-objekt" i historiken för att matcha antalet.
+                    if (data.downloads_count !== undefined && data.downloads_count !== null) {
+                        const count = parseInt(data.downloads_count);
+                        console.log(`📥 Synkar historik från server: ${count} nedladdningar.`);
+                        // Fyll arrayen med placeholder-data så .length blir rätt
+                        userState.downloads = Array(count).fill({ id: 'synced_from_server', timestamp: new Date().toISOString() });
+                    }
+                    
                     saveUserState();
                     
-                    // FIX: Visa vilken nivå användaren fick
                     const tierMsg = userState.tier === 'pro' ? 'PRO 🚀' : 'Free';
                     showToast(`Inloggad som ${tierMsg}!`);
                     
                     closeAuthModal();
                     updateAuthUI();
                     renderHeader();
-                    renderWorkflows(); // FIX: Viktigast! Rita om alla kort så PRO-flöden låses upp
+                    renderWorkflows(); 
                 } else {
                     showToast("Felaktig kod", true);
                 }
             } catch (err) {
                 console.error("Auth verify error details:", err);
-                // Bättre felmeddelande för att guida dig rätt
                 if (err.message.includes('Failed to fetch')) {
                     showToast("Serverfel (CORS). Kolla att n8n-flödet är AKTIVT!", true);
                 } else {
@@ -1230,6 +1229,10 @@
             userState.email = null;
             userState.token = null;
             userState.tier = 'free'; 
+            
+            // FIX: Rensa nedladdningshistoriken vid utloggning så nästa användare slipper ärva den
+            userState.downloads = []; 
+            
             saveUserState();
             showToast("Utloggad");
             closeAuthModal();
